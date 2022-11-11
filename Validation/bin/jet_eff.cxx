@@ -335,16 +335,26 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   std::map<int, TH1F*> jetET_all;
   std::map<int, TH1F*> jetET_all_central;
   std::map<int, TH1F*> jetieta_all;
-  std::map<int, TH1F*> jetET_LLP;
   std::map<int, TH1F*> jetieta_LLP;
   std::map<int, TH1F*> jetFG_ieta_all;
   std::map<int, TH1F*> jetFG_ieta_zero;
   std::map<int, TH1F*> jetFG_ieta_other;
+  std::map<int, TH1F*> jetFG_ieta_allp;
+  std::map<int, TH1F*> jetFG_ieta_fg123;
+  
   //  std::map<int, TH1F*> llp_all;
   //  std::map<int, TH1F*> llp_all_central;
   //  TH1F *jetET_all = new TH1F( "JetEt_all" , axD.c_str(),nJetBins/10, jetLo, jetHi);
   TH1F *llp_all = new TH1F( "LLPqieDelay_all" , "LLP Jet Efficiency;QIE Delay (ns);", 11, -2, 9);
   TH1F *llp_all_central = new TH1F( "LLPqieDelay_central_all" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_zero_central = new TH1F( "LLPqieDelay_FG_central_zero" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_zero = new TH1F( "LLPqieDelay_FG_zero" , "LLP Tower Efficiency;QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_other_central = new TH1F( "LLPqieDelay_FG_central_other" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_other = new TH1F( "LLPqieDelay_FG_other" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_all = new TH1F( "LLPqieDelay_FG_all" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_all_central = new TH1F( "LLPqieDelay_FG_all_central" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_fg123 = new TH1F( "LLPqieDelay_FG_fg123" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_FG_QIEdelay_fg0123 = new TH1F( "LLPqieDelay_FG_fg0123" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
   // l1 jets
   std::map<int, TH1F*> jetET_hwQual;
   std::map<int, TH1F*> jetET_hwQual_central;
@@ -362,6 +372,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 
   TH1F *TP_FG_HB = new TH1F ( "TP_FG_HB", "Finegrain bits for TPs (HB);fg3, fg2, fg1, fg0;# Entries",16,0,16);
   TH1F *TP_FG_HE = new TH1F ( "TP_FG_HE", "Finegrain bits for TPs (HE);fg3, fg2, fg1, fg0;# Entries",16,0,16);
+  
 
   /////////////////////////////////
   // loop through all the entries//
@@ -474,30 +485,34 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       if (jetET_all_central.find(QIEdelay) == jetET_all_central.end()) jetET_all_central[QIEdelay] = new TH1F(Form("JetEt_all_central_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
       if (jetET_hwQual_central.find(QIEdelay) == jetET_hwQual_central.end()) jetET_hwQual_central[QIEdelay] = new TH1F(Form("JetEt_hwQual_central_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
       if (jetieta_all.find(QIEdelay) == jetieta_all.end()) jetieta_all[QIEdelay] = new TH1F(Form("JetIEta_all_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
-      if (jetET_LLP.find(QIEdelay) == jetET_LLP.end()) jetET_LLP[QIEdelay] = new TH1F(Form("JetET_LLP_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
       if (jetieta_LLP.find(QIEdelay) == jetieta_LLP.end()) jetieta_LLP[QIEdelay] = new TH1F(Form("JetIEta_LLP_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
       if (jetFG_ieta_all.find(QIEdelay) == jetFG_ieta_all.end()) jetFG_ieta_all[QIEdelay] = new TH1F(Form("JetFG_IEta_all_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
       if (jetFG_ieta_zero.find(QIEdelay) == jetFG_ieta_zero.end()) jetFG_ieta_zero[QIEdelay] = new TH1F(Form("JetFG_IEta_zero_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
+      if (jetFG_ieta_fg123.find(QIEdelay) == jetFG_ieta_fg123.end()) jetFG_ieta_fg123[QIEdelay] = new TH1F(Form("JetFG_IEta_fg123_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
       if (jetFG_ieta_other.find(QIEdelay) == jetFG_ieta_other.end()) jetFG_ieta_other[QIEdelay] = new TH1F(Form("JetFG_IEta_other_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
+      
+      if (jetFG_ieta_allp.find(QIEdelay) == jetFG_ieta_allp.end()) jetFG_ieta_allp[QIEdelay] = new TH1F(Form("JetFG_IEta_allp_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
 
       for (uint jetIt = 0; jetIt < nJet; jetIt++) {
 	jet_ieta[jetIt] = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
-	jet_iphi[jetIt] = l1hw_->jetIPhi[jetIt];
+	jet_iphi[jetIt] = (l1hw_->jetIPhi[jetIt]+1)/2;
 	
 	if (abs(jet_ieta[jetIt]) <= 16) { // look at jets with hwQual set, and jets must be in HB
-	  jetET_all[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
-	  jetieta_all[QIEdelay]->Fill(jet_ieta[jetIt]);
-	  llp_all->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
-	  if (abs(jet_ieta[jetIt]) <= 8) {
-	    llp_all_central->Fill(QIEdelay,1);
-	    jetET_all_central[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
-	  }
+	  if (l1hw_->jetEt[jetIt] > 20){
+	    jetET_all[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
+	    jetieta_all[QIEdelay]->Fill(jet_ieta[jetIt]);
+	    llp_all->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
+	    if (abs(jet_ieta[jetIt]) <= 8) {
+		llp_all_central->Fill(QIEdelay,1);
+		jetET_all_central[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
+	    }
+	  } // end of jet energy is over 4 gev
 	
-	if(l1hw_->jetHwQual[jetIt] == 1 && abs(jet_ieta[jetIt]) <= 16) {
-	    jetET_LLP[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
+	if(l1hw_->jetHwQual[jetIt] == 1 ) {
 	    jetieta_LLP[QIEdelay]->Fill(jet_ieta[jetIt]);
 	    //std::cout << "ieta " << jetieta_LLP[QIEdelay] << std::endl;
 	    jetET_hwQual[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
+	    llp_QIEdelay->Fill(QIEdelay,1);
 	    
 	    if (abs(jet_ieta[jetIt]) <= 8) {
 	    llp_QIEdelay_central->Fill(QIEdelay,1);
@@ -507,27 +522,74 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	}
       } // jet loop
       
+      int TPenergy[32][72];
       int nHCALTP = l1TPhw_->nHCALTP;
+      for (int tps = 0; tps < nHCALTP; tps++) {
+        int energy = l1TPhw_->hcalTPcompEt[tps];
+        int ieta = l1TPhw_->hcalTPieta[tps];
+        if (abs(l1TPhw_->hcalTPieta[tps]) <= 16 ){
+    	    if (ieta > 0) ieta += 15;
+    	    if (ieta < 0) ieta += 16;
+    	    int iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
+    	    if (iphi > 72) iphi -= 72;
+    	    TPenergy[ieta][iphi] = energy;
+        }
+      }
+      
       for (int tps = 0; tps < nHCALTP; tps++) {
         int fg0 = l1TPhw_->hcalTPfineGrain0[tps];
         int fg1 = l1TPhw_->hcalTPfineGrain1[tps];
         int fg2 = l1TPhw_->hcalTPfineGrain2[tps];
         int fg3 = l1TPhw_->hcalTPfineGrain3[tps];
         if (abs(l1TPhw_->hcalTPieta[tps]) < 16) TP_FG_HB->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));
-        if (abs(l1TPhw_->hcalTPieta[tps]) >= 16 && abs(l1TPhw_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));  // 0 if over 16
-              if (fg0 || (!fg1 && (fg2 || fg3))) {
-                jetFG_ieta_all[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
-            	    if (fg0 == 1){
+	if (abs(l1TPhw_->hcalTPieta[tps]) >= 16 && abs(l1TPhw_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));  // 0 if over 
+    	    if (abs(l1TPhw_->hcalTPieta[tps]) <= 16 ){
+    		// find the energy for this tower
+    		int ieta = l1TPhw_->hcalTPieta[tps];
+    		if (ieta > 0) ieta += 15;
+    		if (ieta < 0) ieta += 16;
+    		int corr_iphi = l1TPhw_->hcalTPiphi[tps]; // add the iphi correction for FG bits here
+    		
+    		corr_iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
+    		if (corr_iphi > 72) corr_iphi -= 72;
+    		
+    		if (corr_iphi%4 == 1 || corr_iphi%4 == 2) corr_iphi -= 2;
+    		if (corr_iphi%4 == 3 || corr_iphi%4 == 0) corr_iphi += 2;
+    		
+    		if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
+    	    
+    		llp_FG_QIEdelay_all->Fill(QIEdelay,1);
+    		jetFG_ieta_allp[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+    		if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
+    		    llp_FG_QIEdelay_all_central->Fill(QIEdelay,1);
+            	}
+            	} // end of requiring tower is over 4 gev
+            	if (fg1 || fg2 || fg3) {
+            	jetFG_ieta_fg123[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+            	llp_FG_QIEdelay_fg123->Fill(QIEdelay,1);
+            	}
+                if (fg0 || (!fg1 && (fg2 || fg3))) {
+            	    jetFG_ieta_all[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+            	    llp_FG_QIEdelay_fg0123->Fill(QIEdelay,1);
+                    if (fg0 == 1){
             		jetFG_ieta_zero[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+            		llp_FG_QIEdelay_zero->Fill(QIEdelay,1);
+            		if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
+            		    llp_FG_QIEdelay_zero_central->Fill(QIEdelay,1);
             		}
+            	    }
             	    if (!fg1 && (fg2 || fg3)) {
             		jetFG_ieta_other[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+            		llp_FG_QIEdelay_other->Fill(QIEdelay,1);
+            	        if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
+            		    llp_FG_QIEdelay_other_central->Fill(QIEdelay,1);
             		}
-            	}
-            } //jet loop
-    
-      
+            	    }
+    	        } // flagged tower
+    	    }  // ieta 16
+	} // TP loop 
     }
+
 
   }// closes loop through events
 
@@ -564,16 +626,22 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     for (uint i=0; i<QIEdelay_order.size(); i++) jetET_all_central[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetieta_all[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetieta_LLP[std::get<0>(QIEdelay_order[i])]->Write();
-    for (uint i=0; i<QIEdelay_order.size(); i++) jetET_LLP[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_all[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_zero[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_other[std::get<0>(QIEdelay_order[i])]->Write();
+    for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_fg123[std::get<0>(QIEdelay_order[i])]->Write();
+    for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_allp[std::get<0>(QIEdelay_order[i])]->Write();
     llp_QIEdelay->Write(); llp_QIEdelay_central->Write();
     llp_all->Write(); llp_all_central->Write();
     CT_hwQual_HB->Write(); CT_hwQual_HE->Write();
     CT_LLPhwQual_HB->Write(); CT_LLPhwQual_HE->Write();
     TP_FG_HB->Write(); TP_FG_HE->Write();
-
+    llp_FG_QIEdelay_zero_central->Write(); llp_FG_QIEdelay_zero->Write();
+    llp_FG_QIEdelay_other_central->Write(); llp_FG_QIEdelay_other->Write();
+    llp_FG_QIEdelay_all_central->Write(); llp_FG_QIEdelay_all->Write();
+    llp_FG_QIEdelay_fg123->Write(); llp_FG_QIEdelay_fg0123->Write();
+    
+    
     if (TEfficiency::CheckConsistency(*llp_QIEdelay, *llp_all)) {
       TEfficiency *effLLPjet = new TEfficiency(*llp_QIEdelay, *llp_all);
       effLLPjet->SetTitle(Form("LLP flagged jets vs QIE delay"));
@@ -594,6 +662,47 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       latex->DrawLatex(0.12, 0.85, cmsLabel);
       effLLPjet->Write();
     }
+    
+    if (TEfficiency::CheckConsistency(*llp_FG_QIEdelay_zero, *llp_FG_QIEdelay_all)) {
+    TEfficiency *effLLPjet = new TEfficiency(*llp_FG_QIEdelay_zero, *llp_all);
+    effLLPjet->SetTitle(Form("LLP flagged tower vs QIE delay"));
+    effLLPjet->SetLineWidth(2.);
+    effLLPjet->SetLineColor(kBlack);
+    effLLPjet->Draw();
+    latex->DrawLatex(0.12, 0.85, cmsLabel);
+    effLLPjet->Write();
+    }
+    
+    if (TEfficiency::CheckConsistency(*llp_FG_QIEdelay_zero_central, *llp_FG_QIEdelay_all_central)) {
+        TEfficiency *effLLPjet = new TEfficiency(*llp_FG_QIEdelay_zero_central, *llp_all_central);
+        effLLPjet->SetTitle(Form("LLP flagged tower vs QIE delay (central HB)"));
+        effLLPjet->SetLineWidth(2.);
+        effLLPjet->SetLineColor(kBlack);
+        effLLPjet->Draw();
+        latex->DrawLatex(0.12, 0.85, cmsLabel);
+        effLLPjet->Write();
+        }
+        
+    if (TEfficiency::CheckConsistency(*llp_FG_QIEdelay_other_central, *llp_FG_QIEdelay_all_central)) {
+	TEfficiency *effLLPjet = new TEfficiency(*llp_FG_QIEdelay_other_central, *llp_all_central);
+	effLLPjet->SetTitle(Form("LLP flagged tower vs QIE delay (central HB)"));
+	effLLPjet->SetLineWidth(2.);
+        effLLPjet->SetLineColor(kBlack);
+	effLLPjet->Draw();
+	latex->DrawLatex(0.12, 0.85, cmsLabel);
+	effLLPjet->Write();
+     }
+     
+     if (TEfficiency::CheckConsistency(*llp_FG_QIEdelay_other, *llp_FG_QIEdelay_all)) {
+	TEfficiency *effLLPjet = new TEfficiency(*llp_FG_QIEdelay_other, *llp_all);
+        effLLPjet->SetTitle(Form("LLP flagged tower vs QIE delay"));
+        effLLPjet->SetLineWidth(2.);
+        effLLPjet->SetLineColor(kBlack);
+        effLLPjet->Draw();
+        latex->DrawLatex(0.12, 0.85, cmsLabel);
+        effLLPjet->Write();
+     }
+    
     for (uint i=0; i<QIEdelay_order.size(); i++) {
       if (TEfficiency::CheckConsistency(*jetET_hwQual[std::get<0>(QIEdelay_order[i])], *jetET_all[std::get<0>(QIEdelay_order[i])])) {
 	TEfficiency *effLLPjet = new TEfficiency(*jetET_hwQual[std::get<0>(QIEdelay_order[i])], *jetET_all[std::get<0>(QIEdelay_order[i])]);
@@ -614,16 +723,6 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
         effLLPjet->Write();
       }
       
-	
-      if (TEfficiency::CheckConsistency(*jetET_LLP[std::get<0>(QIEdelay_order[i])], *jetET_all[std::get<0>(QIEdelay_order[i])])) {
-	TEfficiency *effLLPjet = new TEfficiency(*jetET_LLP[std::get<0>(QIEdelay_order[i])], *jetET_all[std::get<0>(QIEdelay_order[i])]);
-	effLLPjet->SetTitle(Form("LLP jets vs Jet ET, QIE delay %d" ,std::get<0>(QIEdelay_order[i])));
-	effLLPjet->SetLineWidth(2.);
-	effLLPjet->SetLineColor(kBlack);
-	effLLPjet->Draw();
-	latex->DrawLatex(0.12, 0.85, cmsLabel);
-	effLLPjet->Write();
-	}
 	
       if (TEfficiency::CheckConsistency(*jetieta_LLP[std::get<0>(QIEdelay_order[i])], *jetieta_all[std::get<0>(QIEdelay_order[i])])) {
 	TEfficiency *effLLPjet = new TEfficiency(*jetieta_LLP[std::get<0>(QIEdelay_order[i])], *jetieta_all[std::get<0>(QIEdelay_order[i])]);
@@ -653,10 +752,28 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	latex->DrawLatex(0.12, 0.85, cmsLabel);
 	effLLPjet->Write();
 	}
-	
-     } 
+
+
+      if (TEfficiency::CheckConsistency(*jetFG_ieta_zero[std::get<0>(QIEdelay_order[i])], *jetFG_ieta_allp[std::get<0>(QIEdelay_order[i])])) {
+        TEfficiency *effLLPjet = new TEfficiency(*jetFG_ieta_zero[std::get<0>(QIEdelay_order[i])], *jetFG_ieta_all[std::get<0>(QIEdelay_order[i])]);
+        effLLPjet->SetTitle(Form("Flagged tower vs TP ieta all, QIE delay %d" ,std::get<0>(QIEdelay_order[i])));
+        effLLPjet->SetLineWidth(2.);
+        effLLPjet->SetLineColor(kBlack);
+        effLLPjet->Draw();
+        latex->DrawLatex(0.12, 0.85, cmsLabel);
+        effLLPjet->Write();
+        }
+    if (TEfficiency::CheckConsistency(*jetFG_ieta_other[std::get<0>(QIEdelay_order[i])], *jetFG_ieta_allp[std::get<0>(QIEdelay_order[i])])) {
+        TEfficiency *effLLPjet = new TEfficiency(*jetFG_ieta_other[std::get<0>(QIEdelay_order[i])], *jetFG_ieta_all[std::get<0>(QIEdelay_order[i])]);
+        effLLPjet->SetTitle(Form("Flagged tower vs TP ieta all, QIE delay %d" ,std::get<0>(QIEdelay_order[i])));
+        effLLPjet->SetLineWidth(2.);
+        effLLPjet->SetLineColor(kBlack);
+        effLLPjet->Draw();
+        latex->DrawLatex(0.12, 0.85, cmsLabel);
+        effLLPjet->Write();
+	}
+	}
   }
-  
 
   
   myfile << "using the following ntuple: " << inputFile << std::endl;
