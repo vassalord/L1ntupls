@@ -32,7 +32,7 @@
 
 using namespace std;
 
-void JetEffs() {
+void JetEffs_emu() {
   TCanvas *c1 =new TCanvas("c1", " ", 0, 0,1000,1000);
   c1->Range(0,0,1,1);
   c1->SetFillColor(0);
@@ -49,13 +49,13 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h1 = (TH1F*)f1->Get(Form("JetEt_all_delay%d",delay));
-    TH1F *h2 = (TH1F*)f1->Get(Form("JetEt_hwQual_delay%d",delay));
-    TH1F *h3 = (TH1F*)f1->Get(Form("JetEt_all_central_delay%d",delay));
-    TH1F *h4 = (TH1F*)f1->Get(Form("JetEt_hwQual_central_delay%d",delay));
+    TH1F *h1 = (TH1F*)f1->Get(Form("JetEt_all_emu_delay%d",delay));
+    TH1F *h2 = (TH1F*)f1->Get(Form("JetEt_hwQual_emu_delay%d",delay));
+    TH1F *h3 = (TH1F*)f1->Get(Form("JetEt_all_central_emu_delay%d",delay));
+    TH1F *h4 = (TH1F*)f1->Get(Form("JetEt_hwQual_central_emu_delay%d",delay));
 
     h1->SetLineColorAlpha(kWhite, 1.);
-    h1->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T} for QIE delay %d",delay));
+    h1->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T} for QIE delay %d (EMU)",delay));
     h1->GetXaxis()->SetTitle("Jet E_{T} [GeV]");
     h1->GetXaxis()->SetTitleSize(0.045);
     h1->GetXaxis()->SetTitleOffset(1.1);
@@ -63,7 +63,7 @@ void JetEffs() {
     h1->GetYaxis()->SetTitleSize(0.045);
     h1->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h1->GetYaxis()->SetRangeUser(0.,0.15);
+    h1->GetYaxis()->SetRangeUser(0.,0.3);
     h1->GetXaxis()->SetRangeUser(0.,400);
     h1->Draw();
     
@@ -96,7 +96,7 @@ void JetEffs() {
     legend1->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
   } // delay loop
   
@@ -106,11 +106,11 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
-    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
+    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
+    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (EMU)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -118,7 +118,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.2);
     h9->GetXaxis()->SetRangeUser(0 ,17);
     h9->Draw();
 
@@ -144,7 +144,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(0-17)%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_LLPieta(0-17)%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
     
@@ -153,11 +153,11 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
-    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
+    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
+    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (EMU)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -165,7 +165,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.2);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -191,7 +191,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(-17 - 17)%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_LLPieta(-17 - 17)%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
   } // delay loop 
 
@@ -201,11 +201,11 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
-    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
+    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
+    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (EMU)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -213,7 +213,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.2);
     h9->GetXaxis()->SetRangeUser(-17 ,0);
     h9->Draw();
 
@@ -239,7 +239,7 @@ void JetEffs() {
     legend4->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(-17-0)%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_LLPieta(-17-0)%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
     
@@ -249,12 +249,12 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h12 = (TH1F*)f1->Get(Form("JetFG_IEta_all_delay%d",delay));
-    TH1F *h13 = (TH1F*)f1->Get(Form("JetFG_IEta_zero_delay%d",delay));
-    TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
+    TH1F *h12 = (TH1F*)f1->Get(Form("JetFG_IEta_all_emu_delay%d",delay));
+    TH1F *h13 = (TH1F*)f1->Get(Form("JetFG_IEta_zero_emu_delay%d",delay));
+    TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_emu_delay%d",delay));
 
     h12->SetLineColorAlpha(kWhite, 1.);
-    h12->SetTitle(Form("Flagged Tower Efficiency vs TP i#eta for QIE delay %d",delay));
+    h12->SetTitle(Form("Flagged Tower Efficiency vs TP i#eta for QIE delay %d (EMU)",delay));
     h12->GetXaxis()->SetTitle("TP i#eta");
     h12->GetXaxis()->SetTitleSize(0.045);
     h12->GetXaxis()->SetTitleOffset(1.1);
@@ -262,7 +262,7 @@ void JetEffs() {
     h12->GetYaxis()->SetTitleSize(0.045);
     h12->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h12->GetYaxis()->SetRangeUser(0.,1.0);
+    h12->GetYaxis()->SetRangeUser(0.,1.4);
     h12->GetXaxis()->SetRangeUser(-17 ,17);
     h12->Draw();
 
@@ -294,7 +294,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_FG_ieta%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_FG_ieta%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
     
@@ -304,12 +304,12 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
     
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetFG_IEta_allp_delay%d",delay));
-    TH1F *h13 = (TH1F*)f1->Get(Form("JetFG_IEta_zero_delay%d",delay));
-    TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
+    TH1F *h9 = (TH1F*)f1->Get(Form("JetFG_IEta_allp_emu_delay%d",delay));
+    TH1F *h13 = (TH1F*)f1->Get(Form("JetFG_IEta_zero_emu_delay%d",delay));
+    TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev",delay));
+    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev, (EMU)",delay));
     h9->GetXaxis()->SetTitle("TP i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -348,7 +348,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_Tower_ieta%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
 
@@ -358,11 +358,11 @@ void JetEffs() {
     if (delay == 0) continue;
     std::cout << delay << std::endl;
 
-    TH1F *h18 = (TH1F*)f1->Get(Form("JetFG_IEta_fg123_delay%d",delay));
-    TH1F *h19 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
+    TH1F *h18 = (TH1F*)f1->Get(Form("JetFG_IEta_fg123_emu_delay%d",delay));
+    TH1F *h19 = (TH1F*)f1->Get(Form("JetFG_IEta_other_emu_delay%d",delay));
 
     h18->SetLineColorAlpha(kWhite, 1.);
-    h18->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d",delay));
+    h18->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d (EMU)",delay));
     h18->GetXaxis()->SetTitle("TP i#eta");
     h18->GetXaxis()->SetTitleSize(0.045);
     h18->GetXaxis()->SetTitleOffset(1.1);
@@ -395,28 +395,28 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_%d_effs.pdf",delay));
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_Tower_ieta_fg123_%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
 
-  TH1F *h5 = (TH1F*)f1->Get("LLPqieDelay_all");
-  TH1F *h6 = (TH1F*)f1->Get("LLPqieDelay");
-  TH1F *h7 = (TH1F*)f1->Get("LLPqieDelay_central_all");
-  TH1F *h8 = (TH1F*)f1->Get("LLPqieDelay_central");
+  TH1F *h5 = (TH1F*)f1->Get("LLPqieDelay_all_emu");
+  TH1F *h6 = (TH1F*)f1->Get("LLPqieDelay_emu");
+  TH1F *h7 = (TH1F*)f1->Get("LLPqieDelay_central_all_emu");
+  TH1F *h8 = (TH1F*)f1->Get("LLPqieDelay_central_emu");
   
   
   // LLP jet vs QIE delay
   
   
   h5->SetLineColorAlpha(kWhite, 1.);
-  h5->SetTitle(Form("Delayed Jet Efficiency vs QIE delay"));
+  h5->SetTitle(Form("Delayed Jet Efficiency vs QIE delay (EMU)"));
   h5->GetXaxis()->SetTitle("QIE Delay [ns]");
   h5->GetXaxis()->SetTitleSize(0.045);
   h5->GetXaxis()->SetTitleOffset(1.1);
   h5->GetYaxis()->SetTitle("Jet Efficiency");
   h5->GetYaxis()->SetTitleSize(0.045);
   h5->GetYaxis()->SetTitleOffset(1.15);
-  h5->GetYaxis()->SetRangeUser(0.,0.01);
+  h5->GetYaxis()->SetRangeUser(0.,0.2);
   h5->GetXaxis()->SetRangeUser(-3.,10);
   h5->Draw();
 
@@ -449,34 +449,34 @@ void JetEffs() {
   legend2->Draw("same");
 
   char saveFile1[100];
-  sprintf(saveFile1,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Jet_effs.pdf");
+  sprintf(saveFile1,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Jet_effs.pdf");
   c1->SaveAs(saveFile1);
   
   
   // FG vs QIDdelay
   
   
-  TH1F *h20 = (TH1F*)f1->Get("LLPqieDelay_FG_central_zero");
-  TH1F *h21 = (TH1F*)f1->Get("LLPqieDelay_FG_zero");
-  TH1F *h22 = (TH1F*)f1->Get("LLPqieDelay_FG_central_other");
-  TH1F *h23 = (TH1F*)f1->Get("LLPqieDelay_FG_other");
-  TH1F *h24 = (TH1F*)f1->Get("LLPqieDelay_FG_all");
-  TH1F *h25 = (TH1F*)f1->Get("LLPqieDelay_FG_all_central");
-  TH1F *h26 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123");
-  TH1F *h27 = (TH1F*)f1->Get("LLPqieDelay_FG_fg0123");
+  TH1F *h20 = (TH1F*)f1->Get("LLPqieDelay_FG_central_zero_emu");
+  TH1F *h21 = (TH1F*)f1->Get("LLPqieDelay_FG_zero_emu");
+  TH1F *h22 = (TH1F*)f1->Get("LLPqieDelay_FG_central_other_emu");
+  TH1F *h23 = (TH1F*)f1->Get("LLPqieDelay_FG_other_emu");
+  TH1F *h24 = (TH1F*)f1->Get("LLPqieDelay_FG_all_emu");
+  TH1F *h25 = (TH1F*)f1->Get("LLPqieDelay_FG_all_central_emu");
+  TH1F *h26 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123_emu");
+  TH1F *h27 = (TH1F*)f1->Get("LLPqieDelay_FG_fg0123_emu");
   
   
   // logic fg0 = 0 and ieta <= 8 for all
   
     h20->SetLineColorAlpha(kWhite, 1.);
-    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV"));
+    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (EMU)"));
     h20->GetXaxis()->SetTitle("QIE Delay [ns]");
     h20->GetXaxis()->SetTitleSize(0.045);
     h20->GetXaxis()->SetTitleOffset(1.1);
     h20->GetYaxis()->SetTitle("Tower Efficiency");
     h20->GetYaxis()->SetTitleSize(0.045);
     h20->GetYaxis()->SetTitleOffset(1.15);
-    h20->GetYaxis()->SetRangeUser(0.,0.01);
+    h20->GetYaxis()->SetRangeUser(0.,0.05);
     h20->GetXaxis()->SetRangeUser(-3.,10);
     h20->Draw();
                       
@@ -511,7 +511,7 @@ void JetEffs() {
     legend3->Draw("same");
                   
     char saveFile[100];
-    sprintf(saveFile,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_zero.pdf");
+    sprintf(saveFile,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Tower_effs_zero.pdf");
     c1->SaveAs(saveFile);
     
     
@@ -519,7 +519,7 @@ void JetEffs() {
     // logic !fg1 && (fg2 || fg3) and ieta <= 8 for all
 
     h22->SetLineColorAlpha(kWhite, 1.);
-    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV"));
+    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (EMU)"));
     h22->GetXaxis()->SetTitle("QIE Delay [ns]");
     h22->GetXaxis()->SetTitleSize(0.045);
     h22->GetXaxis()->SetTitleOffset(1.1);
@@ -561,14 +561,14 @@ void JetEffs() {
     legend4->Draw("same");
 
     char saveFile2[100];
-    sprintf(saveFile2,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other.pdf");
+    sprintf(saveFile2,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Tower_effs_other.pdf");
     c1->SaveAs(saveFile2);
     
     
     // logic (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
 
     h22->SetLineColorAlpha(kWhite, 1.);
-    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay"));
+    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (EMU)"));
     h22->GetXaxis()->SetTitle("QIE Delay [ns]");
     h22->GetXaxis()->SetTitleSize(0.045);
     h22->GetXaxis()->SetTitleOffset(1.1);
@@ -604,13 +604,13 @@ void JetEffs() {
     legend5->Draw("same");
 
     char saveFile3[100];
-    sprintf(saveFile3,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_and_fg123.pdf");
+    sprintf(saveFile3,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Tower_effs_other_and_fg123.pdf");
     c1->SaveAs(saveFile3);
 
     // logic fg0 = 0 and (!fg1 && (fg2 || fg3)) for fg0 || (!fg1 && (fg2 || fg3)
 
     h23->SetLineColorAlpha(kWhite, 1.);
-    h23->SetTitle(Form("Delayed Tower Efficiency vs QIE delay"));
+    h23->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (EMU)"));
     h23->GetXaxis()->SetTitle("QIE Delay [ns]");
     h23->GetXaxis()->SetTitleSize(0.045);
     h23->GetXaxis()->SetTitleOffset(1.1);
@@ -652,7 +652,7 @@ void JetEffs() {
     legend6->Draw("same");
 
     char saveFile4[100];
-    sprintf(saveFile4,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_zero_fg0123.pdf");
+    sprintf(saveFile4,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Tower_effs_other_zero_fg0123.pdf");
     c1->SaveAs(saveFile4);
 
 
