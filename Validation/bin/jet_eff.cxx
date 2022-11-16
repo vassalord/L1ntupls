@@ -462,11 +462,12 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	jetEt_4 = l1emu_->jetEt[3];
 	l1jetET4->Fill(jetEt_4);
       }
-      
+        
+        int LLP_jet_ieta = -999; // fill with jet ieta if LLP flagged jet found
+        int LLP_jet_iphi = -999;
 	uint nJetemu = l1emu_->nJets; // number of jets per event
 	int jet_ieta[nJetemu] = {-999};
 	int jet_iphi[nJetemu] = {-999};
-	
 	if (jetET_all_emu.find(QIEdelay) == jetET_all_emu.end()) jetET_all_emu[QIEdelay] = new TH1F(Form("JetEt_all_emu_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
 	if (jetET_all_central_emu.find(QIEdelay) == jetET_all_central_emu.end()) jetET_all_central_emu[QIEdelay] = new TH1F(Form("JetEt_all_central_emu_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
 	if (jetieta_all_emu.find(QIEdelay) == jetieta_all_emu.end()) jetieta_all_emu[QIEdelay] = new TH1F(Form("JetIEta_all_emu_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
@@ -487,24 +488,24 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	if (l1emu_->jetEt[jetIt]>112.) jetET112->Fill(l1emu_->jetEt[jetIt]);
 	if (l1emu_->jetEt[jetIt]>180.) jetET180->Fill(l1emu_->jetEt[jetIt]);
       
-        jet_ieta[jetIt] = (abs(l1emu_->jetIEta[jetIt])+1)/2*(l1emu_->jetIEta[jetIt]/abs(l1emu_->jetIEta[jetIt]));;
+        jet_ieta[jetIt] = (abs(l1emu_->jetIEta[jetIt])+1)/2*(l1emu_->jetIEta[jetIt]/abs(l1emu_->jetIEta[jetIt]));
         jet_iphi[jetIt] = (l1emu_->jetIPhi[jetIt] + 1) / 2;
-        
         if (abs(jet_ieta[jetIt]) <= 16) { // look at jets with hwQual set, and jets must be in HB
-    	  if (l1emu_->jetEt[jetIt] > 20){
+    	  //if (l1emu_->jetEt[jetIt] > 30){
     	    jetET_all_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    jetieta_all_emu[QIEdelay]->Fill(jet_ieta[jetIt]);
     	    llp_all_emu->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
-    	     //std::cout << jentry << " EMU jet ieta, iphi all E > 20  " << jet_ieta[jetIt] << " , " << jet_iphi[jetIt] << std::endl;
     	    if (abs(jet_ieta[jetIt]) <= 8) {
     	       llp_all_central_emu->Fill(QIEdelay,1);
     	       jetET_all_central_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    }
-    	} // end of jet energy is over 4 gev
+    	//} // end of jet energy is over 4 gev
     	
     	if(l1emu_->jetHwQual[jetIt] == 1 ) {
+    	    LLP_jet_ieta = jet_ieta[jetIt];
+    	    LLP_jet_iphi = jet_iphi[jetIt];
     	    jetieta_LLP_emu[QIEdelay]->Fill(jet_ieta[jetIt]);
-    	    std::cout << jentry << " EMU ieta, iphi flagged " << jet_ieta[jetIt] << " , " << jet_iphi[jetIt] << std::endl;
+    	    //std::cout << "Event " << jentry << " EMU jet ieta, iphi flagged " << jet_ieta[jetIt] << " , " <<  jet_iphi[jetIt] << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
     	    jetET_hwQual_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    llp_QIEdelay_emu->Fill(QIEdelay,1);
 
@@ -536,7 +537,20 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       l1HT->Fill(htSum);
       l1MHT->Fill(mhtSum);
       
+      int TPenergy[32][72];
       int nHCALTP = l1TPemu_->nHCALTP;
+      for (int tps = 0; tps < nHCALTP; tps++) {
+        int energy = l1TPemu_->hcalTPcompEt[tps];
+        int ieta = l1TPemu_->hcalTPieta[tps];
+        if (abs(l1TPemu_->hcalTPieta[tps]) <= 16 ){
+            if (ieta > 0) ieta += 15;
+            if (ieta < 0) ieta += 16;
+            int iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
+            if (iphi > 72) iphi -= 72;
+            TPenergy[ieta][iphi] = energy;
+            }
+        }
+      
       for (int tps = 0; tps < nHCALTP; tps++) {
           int fg0 = l1TPemu_->hcalTPfineGrain0[tps];
           int fg1 = l1TPemu_->hcalTPfineGrain1[tps];
@@ -545,9 +559,16 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
           if (abs(l1TPemu_->hcalTPieta[tps]) < 16) TP_FG_HB->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));
           if (abs(l1TPemu_->hcalTPieta[tps]) >= 16 && abs(l1TPemu_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3)); // 0 if over 16
           if (abs(l1TPemu_->hcalTPieta[tps]) <= 16 ){
+             int ieta = l1TPemu_->hcalTPieta[tps];
+             if (ieta > 0) ieta += 15;
+             if (ieta < 0) ieta += 16;
+             int corr_iphi = l1TPemu_->hcalTPiphi[tps]; // add the iphi correction for FG bits here
 
-            if (l1TPemu_->hcalTPcompEt[tps] > 4) { // require tower energy > 4 to make efficiency plots
-            
+             corr_iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
+             if (corr_iphi > 72) corr_iphi -= 72;
+
+             if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
+
             llp_FG_QIEdelay_all_emu->Fill(QIEdelay,1);
             jetFG_ieta_allp_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             if (abs(l1TPemu_->hcalTPieta[tps]) <= 8){
@@ -561,6 +582,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
             	if (fg0 || (!fg1 && (fg2 || fg3))) {
             	    jetFG_ieta_all_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123_emu->Fill(QIEdelay,1);
+            		if (abs(l1TPemu_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi - LLP_jet_iphi) < 5) {
+            		//std::cout << "Event " << jentry << ": 9 and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << corr_iphi << " Energy " << TPenergy[ieta][corr_iphi] << std::endl;
+            		}
             	    if (fg0 == 1){
             	        jetFG_ieta_zero_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	    	llp_FG_QIEdelay_zero_emu->Fill(QIEdelay,1);
@@ -587,7 +611,8 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       treeL1TPhw->GetEntry(jentry); // CaloTP
 
       uint nJet = l1hw_->nJets; // number of jets per event
-
+      int LLP_jet_ieta = -999;
+      int LLP_jet_iphi = -999;
       int jet_ieta[nJet] = {-999};
       int jet_iphi[nJet] = {-999};
 
@@ -608,20 +633,21 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	jet_iphi[jetIt] = (l1hw_->jetIPhi[jetIt]+1)/2;
 	
 	if (abs(jet_ieta[jetIt]) <= 16) { // look at jets with hwQual set, and jets must be in HB
-	  if (l1hw_->jetEt[jetIt] > 20){
+	  //if (l1hw_->jetEt[jetIt] > 30){
 	    jetET_all[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    jetieta_all[QIEdelay]->Fill(jet_ieta[jetIt]);
 	    llp_all->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
-	    //std::cout<< jentry << "RAW jet ieta, iphi all E > 20  " << jet_ieta[jetIt] << " , " << jet_iphi[jetIt] << std::endl;
 	    if (abs(jet_ieta[jetIt]) <= 8) {
 		llp_all_central->Fill(QIEdelay,1);
 		jetET_all_central[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    }
-	  } // end of jet energy is over 4 gev
+	  //} // end of jet energy is over 4 gev
 	
 	if(l1hw_->jetHwQual[jetIt] == 1 ) {
+	    LLP_jet_ieta = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
+	    LLP_jet_iphi = (l1hw_->jetIPhi[jetIt] + 1) / 2;
 	    jetieta_LLP[QIEdelay]->Fill(jet_ieta[jetIt]);
-	    std::cout << jentry << " RAW ieta, iphi flagged  " << jet_ieta[jetIt] << " ,  " << jet_iphi[jetIt] << std::endl;
+	    //std::cout << "Event " << jentry << " RAW jet ieta, iphi flagged  " << LLP_jet_ieta << " ,  " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
 	    jetET_hwQual[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    llp_QIEdelay->Fill(QIEdelay,1);
 	    
@@ -663,11 +689,11 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     		
     		corr_iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
     		if (corr_iphi > 72) corr_iphi -= 72;
+    		int corr_iphi_fix = corr_iphi;
+    		if (corr_iphi%4 == 1 || corr_iphi%4 == 2)  corr_iphi_fix -= 2;
+    		if (corr_iphi%4 == 3 || corr_iphi%4 == 0)  corr_iphi_fix += 2;
     		
-    		if (corr_iphi%4 == 1 || corr_iphi%4 == 2) corr_iphi -= 2;
-    		if (corr_iphi%4 == 3 || corr_iphi%4 == 0) corr_iphi += 2;
-    		
-    		if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
+    		if (TPenergy[ieta][corr_iphi_fix] > 4) { // require tower energy > 4 to make efficiency plots
     	    
     		llp_FG_QIEdelay_all->Fill(QIEdelay,1);
     		jetFG_ieta_allp[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
@@ -682,6 +708,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
                 if (fg0 || (!fg1 && (fg2 || fg3))) {
             	    jetFG_ieta_all[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123->Fill(QIEdelay,1);
+            	    if (abs(l1TPhw_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi_fix - LLP_jet_iphi) < 5) {
+            	     //std::cout << "Event " << jentry << ": 9 and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << corr_iphi_fix << " Energy " << TPenergy[ieta][corr_iphi_fix] << std::endl;
+            	    }
                     if (fg0 == 1){
             		jetFG_ieta_zero[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             		llp_FG_QIEdelay_zero->Fill(QIEdelay,1);
