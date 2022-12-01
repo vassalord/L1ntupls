@@ -45,8 +45,8 @@ void JetEffs() {
 
   TFile *f1 = TFile::Open("../l1analysis_new_cond.root");
 
-  for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+  for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h1 = (TH1F*)f1->Get(Form("JetEt_all_delay%d",delay));
@@ -55,7 +55,7 @@ void JetEffs() {
     TH1F *h4 = (TH1F*)f1->Get(Form("JetEt_hwQual_central_delay%d",delay));
 
     h1->SetLineColorAlpha(kWhite, 1.);
-    h1->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T} for QIE delay %d",delay));
+    h1->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T} for QIE delay %d (RAW)",delay));
     h1->GetXaxis()->SetTitle("Jet E_{T} [GeV]");
     h1->GetXaxis()->SetTitleSize(0.045);
     h1->GetXaxis()->SetTitleOffset(1.1);
@@ -102,15 +102,15 @@ void JetEffs() {
   
   // pert of code for ieta -16 - 16
   
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
     TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d (RAW)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -118,7 +118,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.03);
     h9->GetXaxis()->SetRangeUser(0 ,17);
     h9->Draw();
 
@@ -149,15 +149,15 @@ void JetEffs() {
     }
     
  // pert of code for ieta 1-16
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
     TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (RAW)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -165,7 +165,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.03);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -197,15 +197,15 @@ void JetEffs() {
 
 
 // pert of code for ieta -16 - 0
- for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+ for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
     TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (RAW)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -213,7 +213,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.02);
+    h9->GetYaxis()->SetRangeUser(0.,0.03);
     h9->GetXaxis()->SetRangeUser(-17 ,0);
     h9->Draw();
 
@@ -245,8 +245,8 @@ void JetEffs() {
     
     // for depth
 
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h12 = (TH1F*)f1->Get(Form("JetFG_IEta_all_delay%d",delay));
@@ -254,7 +254,7 @@ void JetEffs() {
     TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
 
     h12->SetLineColorAlpha(kWhite, 1.);
-    h12->SetTitle(Form("Flagged Tower Efficiency vs TP i#eta for QIE delay %d",delay));
+    h12->SetTitle(Form("Flagged Tower Efficiency vs TP i#eta for QIE delay %d (RAW)",delay));
     h12->GetXaxis()->SetTitle("TP i#eta");
     h12->GetXaxis()->SetTitleSize(0.045);
     h12->GetXaxis()->SetTitleOffset(1.1);
@@ -262,7 +262,7 @@ void JetEffs() {
     h12->GetYaxis()->SetTitleSize(0.045);
     h12->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h12->GetYaxis()->SetRangeUser(0.,1.0);
+    h12->GetYaxis()->SetRangeUser(0.,1.3);
     h12->GetXaxis()->SetRangeUser(-17 ,17);
     h12->Draw();
 
@@ -300,8 +300,8 @@ void JetEffs() {
     
     // eff with (fg1 && (fg2 || fg3)) and fg 0 == 1 ) / all
 
-    for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+    for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
     
     TH1F *h9 = (TH1F*)f1->Get(Form("JetFG_IEta_allp_delay%d",delay));
@@ -309,14 +309,14 @@ void JetEffs() {
     TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev",delay));
+    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev (RAW)",delay));
     h9->GetXaxis()->SetTitle("TP i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
     h9->GetYaxis()->SetTitle("Tower Efficiency");
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
-    h9->GetYaxis()->SetRangeUser(0.,0.14);
+    h9->GetYaxis()->SetRangeUser(0.,0.2);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -354,22 +354,22 @@ void JetEffs() {
 
  // eff with (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
 
- for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+ for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h18 = (TH1F*)f1->Get(Form("JetFG_IEta_fg123_delay%d",delay));
     TH1F *h19 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
 
     h18->SetLineColorAlpha(kWhite, 1.);
-    h18->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d",delay));
+    h18->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d (RAW)",delay));
     h18->GetXaxis()->SetTitle("TP i#eta");
     h18->GetXaxis()->SetTitleSize(0.045);
     h18->GetXaxis()->SetTitleOffset(1.1);
     h18->GetYaxis()->SetTitle("Tower Efficiency");
     h18->GetYaxis()->SetTitleSize(0.045);
     h18->GetYaxis()->SetTitleOffset(1.15);
-    h18->GetYaxis()->SetRangeUser(0.,1.0);
+    h18->GetYaxis()->SetRangeUser(0.,1.3);
     h18->GetXaxis()->SetRangeUser(-17 ,17);
     h18->Draw();
 
@@ -409,7 +409,7 @@ void JetEffs() {
   
   
   h5->SetLineColorAlpha(kWhite, 1.);
-  h5->SetTitle(Form("Delayed Jet Efficiency vs QIE delay"));
+  h5->SetTitle(Form("Delayed Jet Efficiency vs QIE delay (RAW)"));
   h5->GetXaxis()->SetTitle("QIE Delay [ns]");
   h5->GetXaxis()->SetTitleSize(0.045);
   h5->GetXaxis()->SetTitleOffset(1.1);
@@ -417,7 +417,7 @@ void JetEffs() {
   h5->GetYaxis()->SetTitleSize(0.045);
   h5->GetYaxis()->SetTitleOffset(1.15);
   h5->GetYaxis()->SetRangeUser(0.,0.01);
-  h5->GetXaxis()->SetRangeUser(-3.,10);
+  h5->GetXaxis()->SetRangeUser(-5.,12);
   h5->Draw();
 
   c1->Update();
@@ -466,18 +466,18 @@ void JetEffs() {
   TH1F *h27 = (TH1F*)f1->Get("LLPqieDelay_FG_fg0123");
   
   
-  // logic fg0 = 0 and ieta <= 8 for all
+  // logic fg0 = 1 and ieta <= 8 for all
   
     h20->SetLineColorAlpha(kWhite, 1.);
-    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV"));
+    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (RAW)"));
     h20->GetXaxis()->SetTitle("QIE Delay [ns]");
     h20->GetXaxis()->SetTitleSize(0.045);
     h20->GetXaxis()->SetTitleOffset(1.1);
     h20->GetYaxis()->SetTitle("Tower Efficiency");
     h20->GetYaxis()->SetTitleSize(0.045);
     h20->GetYaxis()->SetTitleOffset(1.15);
-    h20->GetYaxis()->SetRangeUser(0.,0.01);
-    h20->GetXaxis()->SetRangeUser(-3.,10);
+    h20->GetYaxis()->SetRangeUser(0.,0.02);
+    h20->GetXaxis()->SetRangeUser(-5.,12);
     h20->Draw();
                       
     c1->Update();
@@ -519,15 +519,15 @@ void JetEffs() {
     // logic !fg1 && (fg2 || fg3) and ieta <= 8 for all
 
     h22->SetLineColorAlpha(kWhite, 1.);
-    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV"));
+    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (RAW)"));
     h22->GetXaxis()->SetTitle("QIE Delay [ns]");
     h22->GetXaxis()->SetTitleSize(0.045);
     h22->GetXaxis()->SetTitleOffset(1.1);
     h22->GetYaxis()->SetTitle("Tower Efficiency");
     h22->GetYaxis()->SetTitleSize(0.045);
     h22->GetYaxis()->SetTitleOffset(1.15);
-    h22->GetYaxis()->SetRangeUser(0.,0.2);
-    h22->GetXaxis()->SetRangeUser(-3.,10);
+    h22->GetYaxis()->SetRangeUser(0.,0.22);
+    h22->GetXaxis()->SetRangeUser(-5.,12);
     h22->Draw();
 
     c1->Update();
@@ -568,15 +568,15 @@ void JetEffs() {
     // logic (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
 
     h22->SetLineColorAlpha(kWhite, 1.);
-    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay"));
+    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (RAW)"));
     h22->GetXaxis()->SetTitle("QIE Delay [ns]");
     h22->GetXaxis()->SetTitleSize(0.045);
     h22->GetXaxis()->SetTitleOffset(1.1);
     h22->GetYaxis()->SetTitle("Tower Efficiency");
     h22->GetYaxis()->SetTitleSize(0.045);
     h22->GetYaxis()->SetTitleOffset(1.15);
-    h22->GetYaxis()->SetRangeUser(0.,0.8);
-    h22->GetXaxis()->SetRangeUser(-3.,10);
+    h22->GetYaxis()->SetRangeUser(0.,1.3);
+    h22->GetXaxis()->SetRangeUser(-5.,12);
     h22->Draw();
 
     c1->Update();
@@ -610,7 +610,7 @@ void JetEffs() {
     // logic fg0 = 0 and (!fg1 && (fg2 || fg3)) for fg0 || (!fg1 && (fg2 || fg3)
 
     h23->SetLineColorAlpha(kWhite, 1.);
-    h23->SetTitle(Form("Delayed Tower Efficiency vs QIE delay"));
+    h23->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (RAW)"));
     h23->GetXaxis()->SetTitle("QIE Delay [ns]");
     h23->GetXaxis()->SetTitleSize(0.045);
     h23->GetXaxis()->SetTitleOffset(1.1);
@@ -618,7 +618,7 @@ void JetEffs() {
     h23->GetYaxis()->SetTitleSize(0.045);
     h23->GetYaxis()->SetTitleOffset(1.15);
     h23->GetYaxis()->SetRangeUser(0.,1.4);
-    h23->GetXaxis()->SetRangeUser(-3.,10);
+    h23->GetXaxis()->SetRangeUser(-5.,12);
     h23->Draw();
 
     c1->Update();
@@ -630,14 +630,14 @@ void JetEffs() {
     if(TEfficiency::CheckConsistency(*h21,*h27) && TEfficiency::CheckConsistency(*h23,*h27))
         {
             std::cout << "about to do vs QIE plots" << std::endl;
-            pEff8 = new TEfficiency(*h21,*h27);
-            pEff8->SetLineWidth(3.);
-            pEff8->SetLineColor(kRed);
-            pEff8->Draw("same");
-            pEff9 = new TEfficiency(*h23,*h27);
-            pEff9->SetLineWidth(3.);
-            pEff9->SetLineColor(kBlack);
-            pEff9->Draw("same");
+            pEff11 = new TEfficiency(*h21,*h27);
+            pEff11->SetLineWidth(3.);
+            pEff11->SetLineColor(kRed);
+            pEff11->Draw("same");
+            pEff12 = new TEfficiency(*h23,*h27);
+            pEff12->SetLineWidth(3.);
+            pEff12->SetLineColor(kBlack);
+            pEff12->Draw("same");
         }
 
     TLegend *legend6 = new TLegend(0.15, 0.7, 0.6, 0.8);

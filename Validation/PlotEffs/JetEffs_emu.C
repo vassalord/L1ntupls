@@ -45,8 +45,7 @@ void JetEffs_emu() {
 
   TFile *f1 = TFile::Open("../l1analysis_new_cond.root");
 
-  for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+  for (int delay = -4; delay <= 10; delay += 2) {
     std::cout << delay << std::endl;
 
     TH1F *h1 = (TH1F*)f1->Get(Form("JetEt_all_emu_delay%d",delay));
@@ -63,7 +62,7 @@ void JetEffs_emu() {
     h1->GetYaxis()->SetTitleSize(0.045);
     h1->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h1->GetYaxis()->SetRangeUser(0.,0.3);
+    h1->GetYaxis()->SetRangeUser(0.,1.2);
     h1->GetXaxis()->SetRangeUser(0.,400);
     h1->Draw();
     
@@ -102,8 +101,7 @@ void JetEffs_emu() {
   
   // pert of code for ieta -16 - 16
   
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
@@ -118,7 +116,7 @@ void JetEffs_emu() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.2);
+    h9->GetYaxis()->SetRangeUser(0.,0.3);
     h9->GetXaxis()->SetRangeUser(0 ,17);
     h9->Draw();
 
@@ -149,8 +147,8 @@ void JetEffs_emu() {
     }
     
  // pert of code for ieta 1-16
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
@@ -165,7 +163,7 @@ void JetEffs_emu() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.2);
+    h9->GetYaxis()->SetRangeUser(0.,0.3);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -197,8 +195,8 @@ void JetEffs_emu() {
 
 
 // pert of code for ieta -16 - 0
- for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+ for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_emu_delay%d",delay));
@@ -213,7 +211,7 @@ void JetEffs_emu() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.2);
+    h9->GetYaxis()->SetRangeUser(0.,0.3);
     h9->GetXaxis()->SetRangeUser(-17 ,0);
     h9->Draw();
 
@@ -245,8 +243,8 @@ void JetEffs_emu() {
     
     // for depth
 
-   for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+   for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h12 = (TH1F*)f1->Get(Form("JetFG_IEta_all_emu_delay%d",delay));
@@ -300,8 +298,8 @@ void JetEffs_emu() {
     
     // eff with (fg1 && (fg2 || fg3)) and fg 0 == 1 ) / all
 
-    for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+    for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
     
     TH1F *h9 = (TH1F*)f1->Get(Form("JetFG_IEta_allp_emu_delay%d",delay));
@@ -354,8 +352,8 @@ void JetEffs_emu() {
 
  // eff with (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
 
- for (int delay = -2; delay <= 8; delay += 2) {
-    if (delay == 0) continue;
+ for (int delay = -4; delay <= 10; delay += 2) {
+    //if (delay == 0) continue;
     std::cout << delay << std::endl;
 
     TH1F *h18 = (TH1F*)f1->Get(Form("JetFG_IEta_fg123_emu_delay%d",delay));
@@ -369,7 +367,7 @@ void JetEffs_emu() {
     h18->GetYaxis()->SetTitle("Tower Efficiency");
     h18->GetYaxis()->SetTitleSize(0.045);
     h18->GetYaxis()->SetTitleOffset(1.15);
-    h18->GetYaxis()->SetRangeUser(0.,1.0);
+    h18->GetYaxis()->SetRangeUser(0.,1.3);
     h18->GetXaxis()->SetRangeUser(-17 ,17);
     h18->Draw();
 
@@ -417,7 +415,7 @@ void JetEffs_emu() {
   h5->GetYaxis()->SetTitleSize(0.045);
   h5->GetYaxis()->SetTitleOffset(1.15);
   h5->GetYaxis()->SetRangeUser(0.,0.2);
-  h5->GetXaxis()->SetRangeUser(-3.,10);
+  h5->GetXaxis()->SetRangeUser(-5.,12);
   h5->Draw();
 
   c1->Update();
@@ -469,7 +467,7 @@ void JetEffs_emu() {
   // logic fg0 = 0 and ieta <= 8 for all
   
     h20->SetLineColorAlpha(kWhite, 1.);
-    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (EMU)"));
+    h20->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (EMU)"));
     h20->GetXaxis()->SetTitle("QIE Delay [ns]");
     h20->GetXaxis()->SetTitleSize(0.045);
     h20->GetXaxis()->SetTitleOffset(1.1);
@@ -477,7 +475,7 @@ void JetEffs_emu() {
     h20->GetYaxis()->SetTitleSize(0.045);
     h20->GetYaxis()->SetTitleOffset(1.15);
     h20->GetYaxis()->SetRangeUser(0.,0.05);
-    h20->GetXaxis()->SetRangeUser(-3.,10);
+    h20->GetXaxis()->SetRangeUser(-5.,12);
     h20->Draw();
                       
     c1->Update();
@@ -519,15 +517,15 @@ void JetEffs_emu() {
     // logic !fg1 && (fg2 || fg3) and ieta <= 8 for all
 
     h22->SetLineColorAlpha(kWhite, 1.);
-    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (EMU)"));
+    h22->SetTitle(Form("Delayed Tower Efficiency vs QIE delay (EMU)"));
     h22->GetXaxis()->SetTitle("QIE Delay [ns]");
     h22->GetXaxis()->SetTitleSize(0.045);
     h22->GetXaxis()->SetTitleOffset(1.1);
     h22->GetYaxis()->SetTitle("Tower Efficiency");
     h22->GetYaxis()->SetTitleSize(0.045);
     h22->GetYaxis()->SetTitleOffset(1.15);
-    h22->GetYaxis()->SetRangeUser(0.,0.2);
-    h22->GetXaxis()->SetRangeUser(-3.,10);
+    h22->GetYaxis()->SetRangeUser(0.,0.22);
+    h22->GetXaxis()->SetRangeUser(-5.,12);
     h22->Draw();
 
     c1->Update();
@@ -575,8 +573,8 @@ void JetEffs_emu() {
     h22->GetYaxis()->SetTitle("Tower Efficiency");
     h22->GetYaxis()->SetTitleSize(0.045);
     h22->GetYaxis()->SetTitleOffset(1.15);
-    h22->GetYaxis()->SetRangeUser(0.,0.8);
-    h22->GetXaxis()->SetRangeUser(-3.,10);
+    h22->GetYaxis()->SetRangeUser(0.,1.3);
+    h22->GetXaxis()->SetRangeUser(-5.,12);
     h22->Draw();
 
     c1->Update();
@@ -618,7 +616,7 @@ void JetEffs_emu() {
     h23->GetYaxis()->SetTitleSize(0.045);
     h23->GetYaxis()->SetTitleOffset(1.15);
     h23->GetYaxis()->SetRangeUser(0.,1.4);
-    h23->GetXaxis()->SetRangeUser(-3.,10);
+    h23->GetXaxis()->SetRangeUser(-5.,12);
     h23->Draw();
 
     c1->Update();
@@ -630,14 +628,14 @@ void JetEffs_emu() {
     if(TEfficiency::CheckConsistency(*h21,*h27) && TEfficiency::CheckConsistency(*h23,*h27))
         {
             std::cout << "about to do vs QIE plots" << std::endl;
-            pEff8 = new TEfficiency(*h21,*h27);
-            pEff8->SetLineWidth(3.);
-            pEff8->SetLineColor(kRed);
-            pEff8->Draw("same");
-            pEff9 = new TEfficiency(*h23,*h27);
-            pEff9->SetLineWidth(3.);
-            pEff9->SetLineColor(kBlack);
-            pEff9->Draw("same");
+            pEff11 = new TEfficiency(*h21,*h27);
+            pEff11->SetLineWidth(3.);
+            pEff11->SetLineColor(kRed);
+            pEff11->Draw("same");
+            pEff12 = new TEfficiency(*h23,*h27);
+            pEff12->SetLineWidth(3.);
+            pEff12->SetLineColor(kBlack);
+            pEff12->Draw("same");
         }
 
     TLegend *legend6 = new TLegend(0.15, 0.7, 0.6, 0.8);

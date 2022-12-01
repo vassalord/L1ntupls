@@ -113,8 +113,12 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   std::string inputFile(inputFileDirectory);
   inputFile += "/L1Ntuple*.root";
 
+  std::string inputFile_m4(inputFileDirectory);
+  inputFile_m4 += "/L1Ntuple_QIEdelay-4*.root";
   std::string inputFile_m2(inputFileDirectory);
   inputFile_m2 += "/L1Ntuple_QIEdelay-2*.root";
+  std::string inputFile_0(inputFileDirectory);
+  inputFile_0 += "/L1Ntuple_QIEdelay0*.root";
   std::string inputFile_2(inputFileDirectory);
   inputFile_2 += "/L1Ntuple_QIEdelay2*.root";
   std::string inputFile_4(inputFileDirectory);
@@ -123,7 +127,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   inputFile_6 += "/L1Ntuple_QIEdelay6*.root";
   std::string inputFile_8(inputFileDirectory);
   inputFile_8 += "/L1Ntuple_QIEdelay8*.root";
+  std::cout << inputFile_m4 << std::endl;
   std::cout << inputFile_m2 << std::endl;
+  std::cout << inputFile_0 << std::endl;
   std::cout << inputFile_2 << std::endl;
   std::cout << inputFile_4 << std::endl;
   std::cout << inputFile_6 << std::endl;
@@ -157,12 +163,18 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   // make trees
   std::cout << "Loading up the TChain..." << std::endl;
   TChain * eventTree = new TChain("l1EventTree/L1EventTree");
+  eventTree->Add(inputFile_m4.c_str());
+  int nentries_m4 = eventTree->GetEntries();
+  QIEdelay_order.push_back(std::make_tuple(-4, std::make_tuple(nentries_m4, nentries_m4)));
   eventTree->Add(inputFile_m2.c_str());
   int nentries_m2 = eventTree->GetEntries();
-  QIEdelay_order.push_back(std::make_tuple(-2, std::make_tuple(nentries_m2, nentries_m2)));
+  QIEdelay_order.push_back(std::make_tuple(-2, std::make_tuple(nentries_m2 - nentries_m4, nentries_m2)));
+  eventTree->Add(inputFile_0.c_str());
+  int nentries_0 = eventTree->GetEntries();
+  QIEdelay_order.push_back(std::make_tuple(0, std::make_tuple(nentries_0 - nentries_m2, nentries_0)));
   eventTree->Add(inputFile_2.c_str());
   int nentries_2 = eventTree->GetEntries();
-  QIEdelay_order.push_back(std::make_tuple(2, std::make_tuple(nentries_2 - nentries_m2, nentries_2)));
+  QIEdelay_order.push_back(std::make_tuple(2, std::make_tuple(nentries_2 - nentries_0, nentries_2)));
   eventTree->Add(inputFile_4.c_str());
   int nentries_4 = eventTree->GetEntries();
   QIEdelay_order.push_back(std::make_tuple(4, std::make_tuple(nentries_4 - nentries_2, nentries_4)));
@@ -177,7 +189,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   // L1 jets
   TChain * treeL1emu = new TChain("l1UpgradeEmuTree/L1UpgradeTree");
   if (emuOn){
+    treeL1emu->Add(inputFile_m4.c_str());
     treeL1emu->Add(inputFile_m2.c_str());
+    treeL1emu->Add(inputFile_0.c_str());
     treeL1emu->Add(inputFile_2.c_str());
     treeL1emu->Add(inputFile_4.c_str());
     treeL1emu->Add(inputFile_6.c_str());
@@ -186,7 +200,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TChain * treeL1hw = new TChain("l1UpgradeTree/L1UpgradeTree");
   if (hwOn){
     //    treeL1hw->Add(inputFile.c_str());
+    treeL1hw->Add(inputFile_m4.c_str());
     treeL1hw->Add(inputFile_m2.c_str());
+    treeL1hw->Add(inputFile_0.c_str());
     treeL1hw->Add(inputFile_2.c_str());
     treeL1hw->Add(inputFile_4.c_str());
     treeL1hw->Add(inputFile_6.c_str());
@@ -196,7 +212,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TChain * treeL1TPemu = new TChain("l1CaloTowerEmuTree/L1CaloTowerTree");
   if (emuOn) {
     //    treeL1TPemu->Add(inputFile.c_str());
+    treeL1TPemu->Add(inputFile_m4.c_str());
     treeL1TPemu->Add(inputFile_m2.c_str());
+    treeL1TPemu->Add(inputFile_0.c_str());
     treeL1TPemu->Add(inputFile_2.c_str());
     treeL1TPemu->Add(inputFile_4.c_str());
     treeL1TPemu->Add(inputFile_6.c_str());
@@ -205,8 +223,10 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TChain * treeL1TPhw = new TChain("l1CaloTowerTree/L1CaloTowerTree");
   if (hwOn) {
     //    treeL1TPhw->Add(inputFile.c_str());
+    treeL1TPhw->Add(inputFile_m4.c_str());
     treeL1TPhw->Add(inputFile_m2.c_str());
     treeL1TPhw->Add(inputFile_2.c_str());
+    treeL1TPhw->Add(inputFile_0.c_str());
     treeL1TPhw->Add(inputFile_4.c_str());
     treeL1TPhw->Add(inputFile_6.c_str());
     treeL1TPhw->Add(inputFile_8.c_str());
@@ -214,8 +234,10 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TChain * treeL1CTemu = new TChain("l1CaloTowerEmuTree/L1CaloTowerTree");
   if (emuOn) {
     //    treeL1CTemu->Add(inputFile.c_str());
+    treeL1CTemu->Add(inputFile_m4.c_str());
     treeL1CTemu->Add(inputFile_m2.c_str());
     treeL1CTemu->Add(inputFile_2.c_str());
+    treeL1CTemu->Add(inputFile_0.c_str());
     treeL1CTemu->Add(inputFile_4.c_str());
     treeL1CTemu->Add(inputFile_6.c_str());
     treeL1CTemu->Add(inputFile_8.c_str());
@@ -223,7 +245,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TChain * treeL1CThw = new TChain("l1CaloTowerTree/L1CaloTowerTree");
   if (hwOn) {
     //    treeL1CThw->Add(inputFile.c_str());
+    treeL1CThw->Add(inputFile_m4.c_str());
     treeL1CThw->Add(inputFile_m2.c_str());
+    treeL1CThw->Add(inputFile_0.c_str());
     treeL1CThw->Add(inputFile_2.c_str());
     treeL1CThw->Add(inputFile_4.c_str());
     treeL1CThw->Add(inputFile_6.c_str());
@@ -423,6 +447,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 
       int LLP_jet_ieta = -999; // fill with jet ieta if LLP flagged jet found
       int LLP_jet_iphi = -999;
+      std::ofstream out ("L1Ntuple_Event_EMU.txt", std::ios::app);
+      //std::ofstream out ("L1Ntuple_jet_EMU.txt", std::ios::app);
+      if (out.is_open()){
 
       uint nJetemu = l1emu_->nJets; // number of jets per event
       for (uint jetIt = 0; jetIt < nJetemu; jetIt++) {
@@ -432,11 +459,16 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	if (l1emu_->jetEt[jetIt]>92.) jetET92->Fill(l1emu_->jetEt[jetIt]);
 	if (l1emu_->jetEt[jetIt]>112.) jetET112->Fill(l1emu_->jetEt[jetIt]);
 	if (l1emu_->jetEt[jetIt]>180.) jetET180->Fill(l1emu_->jetEt[jetIt]);
+	 
+	int jet_ieta = (abs(l1emu_->jetIEta[jetIt])+1)/2*(l1emu_->jetIEta[jetIt]/abs(l1emu_->jetIEta[jetIt]));
+	int jet_iphi = (l1emu_->jetIPhi[jetIt] + 1) / 2;
+	//out << "L1 Event " << jentry << ": EMU L1 jet has HwQual set ieta, iphi: " << jet_ieta << ", " << jet_iphi << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
 
-	if (l1emu_->jetHwQual[jetIt] == 1 && abs(l1emu_->jetIEta[jetIt]) < 16) { // look at jets with hwQual set, and jets must be in HB
-	  LLP_jet_ieta = (abs(l1emu_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
-	  LLP_jet_iphi = (l1emu_->jetIPhi[jetIt] + 1) / 2;
-	 std::cout << "Event " << jentry << ": EMU L1 jet has HwQual set, in HB and the ieta, iphi is " << LLP_jet_ieta << ", " << l1emu_->jetIPhi[jetIt] << " corrected iphi = " << LLP_jet_iphi << std::endl;
+	if (l1emu_->jetHwQual[jetIt] == 1 && abs(jet_ieta) <= 29) { // look at jets with hwQual set, and jets must be in HB
+	LLP_jet_ieta = jet_ieta;
+	LLP_jet_iphi = jet_iphi;
+	std::cout << "L1 Event " << jentry << ": EMU L1 jet has HwQual set ieta, iphi: " << LLP_jet_ieta << ", " << LLP_jet_iphi << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
+	out << "L1 Event " << jentry << ": EMU L1 jet has HwQual set ieta, iphi: " << LLP_jet_ieta << ", " << LLP_jet_iphi <<  " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
 	  if (QIEdelay == 8) jetET_hwQualEMU->Fill(l1emu_->jetEt[jetIt]); // distribution of jet ET for jets with hwQual set, for one value of QIE delay
 	  llp_QIEdelayEMU->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
 	  if (abs(l1emu_->jetIEta[jetIt]) <= 8) llp_QIEdelay_centralEMU->Fill(QIEdelay,1);
@@ -472,8 +504,10 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
         if (abs(l1CTemu_->ieta[towers]) < 16) CT_hwQual_HB_emu->Fill(l1CTemu_->iqual[towers],1);
         if (abs(l1CTemu_->ieta[towers]) >= 16 && abs(l1CTemu_->ieta[towers]) < 29) CT_hwQual_HE_emu->Fill(l1CTemu_->iqual[towers],1);
         if ( (l1CTemu_->iqual[towers] & 0b0100) >> 2 == 1) { // if tower hwQual is set
-          if (abs(l1CTemu_->ieta[towers]) < 16) {
+          if (abs(l1CTemu_->ieta[towers]) < 29) {
           ieta_number = l1CTemu_->ieta[towers];
+          std::cout << "L1 Event " << jentry << ": EMU CaloTower flagged ieta, iphi: " << l1CTemu_->ieta[towers] << ", " << l1CTemu_->iphi[towers] << " Energy " <<  l1CTemu_->iet[towers] <<  std::endl;
+          out << "L1 Event " << jentry << ": EMU CaloTower flagged ieta, iphi: " << l1CTemu_->ieta[towers] << ", " << l1CTemu_->iphi[towers]<< " Energy " <<  l1CTemu_->iet[towers] <<std::endl;
            //iphi_emucalo = l1CTemu_->iphi[towers];
 	    CT_LLPhwQual_HB_emu->Fill(QIEdelay,1);
 	    //std::cout << "Event " << jentry << ": EMU calo tower with hwqual = " << l1CTemu_->iqual[towers] << " at position ieta, iphi = " << l1CTemu_->ieta[towers] << ", " << l1CTemu_->iphi[towers] << std::endl;
@@ -484,26 +518,55 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	}
       }
       
-      int nHCALTP = l1TPemu_->nHCALTP;
+       //int TPenergy[32][72];
+       int nHCALTP = l1TPemu_->nHCALTP;
+//    for (int tps = 0; tps < nHCALTP; tps++) {
+//        int energy = l1TPemu_->hcalTPcompEt[tps];
+//        int ieta = l1TPemu_->hcalTPieta[tps];
+//        if (abs(l1TPemu_->hcalTPieta[tps]) <= 29 ){
+//           if (ieta > 0) ieta += 28;
+//           if (ieta < 0) ieta += 29;
+//           int iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
+//           if (iphi > 72) iphi -= 72;
+//           TPenergy[ieta][iphi] = energy;
+//          }
+//     }
+      
       for (int tps = 0; tps < nHCALTP; tps++) {
         int fg0 = l1TPemu_->hcalTPfineGrain0[tps];
         int fg1 = l1TPemu_->hcalTPfineGrain1[tps];
         int fg2 = l1TPemu_->hcalTPfineGrain2[tps];
         int fg3 = l1TPemu_->hcalTPfineGrain3[tps];
+        //int fg4 = l1TPemu_->hcalTPfineGrain4[tps];
+        //int fg5 = l1TPemu_->hcalTPfineGrain5[tps];
+        int TPenergy = l1TPemu_->hcalTPcompEt[tps];
+        int adj_iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
+        if (adj_iphi > 72) adj_iphi -= 72;
         if (abs(l1TPemu_->hcalTPieta[tps]) < 16) TP_FG_HB->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));
-        if (abs(l1TPemu_->hcalTPieta[tps]) >= 16 && abs(l1TPemu_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3)); // 0 if over 16                                                         
+        if (abs(l1TPemu_->hcalTPieta[tps]) >= 16 && abs(l1TPemu_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3)); // 0 if over 16
+        if (abs(l1TPemu_->hcalTPieta[tps]) <= 29 ){
+           int ieta = l1TPemu_->hcalTPieta[tps];
+           if (ieta > 0) ieta += 28;
+           if (ieta < 0) ieta += 29;
+        if ((fg0 + fg1 + fg2 + fg3 ) > 0) std::cout << "L1 Event " << jentry << ": EMU HCAL TP tower with set FG bits (" << fg0 << fg1 << fg2 << fg3<< "), with TP corrected ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
+        if ((fg0 + fg1 + fg2 + fg3 ) > 0) out << "L1 Event " << jentry << ": EMU HCAL TP tower with set FG bits (" << fg0 << fg1 << fg2 << fg3<< "), with TP corrected ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi<< " Energy " << TPenergy << std::endl;
         if (fg0 || (!fg1 && (fg2 || fg3))) {
-	  int adj_iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
-	  if (adj_iphi > 72) adj_iphi -= 72;
+        std::cout << "L1 Event " << jentry << ": EMU flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP corrected ieta, iphi "<< l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
+        out << "L1 Event " << jentry << ": EMU flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP corrected ieta, iphi "<< l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
+	  //std::cout << "Event " << jentry << "in FG bit flagged tower logic, TP ieta, iphi = " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << " and ieta, iphi of L1 jet = " << LLP_jet_ieta << ", " << LLP_jet_iphi << std::endl;
           //if (LLP_jet_ieta != -999) std::cout << "Event " << jentry << ": EMU flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << l1TPemu_->hcalTPiphi[tps] << " (adjusted to match with HCAL ntuple iphi " << adj_iphi << ")" << std::endl;
 	            if (abs(l1TPemu_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(adj_iphi - LLP_jet_iphi) >4 && abs(adj_iphi - LLP_jet_iphi) < 7) {
-	    std::cout << "Event " << jentry << ": 13 and EMU flagged HCAL TP is close to a EMU flagged L1 LLP jet which is at ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << std::endl;
+	    //std::cout << "Event " << jentry << ": 13 and EMU flagged HCAL TP is close to a EMU flagged L1 LLP jet which is at ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << std::endl;
 	             }
 	             if (abs(l1TPemu_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(adj_iphi - LLP_jet_iphi) < 5) {
-	    std::cout << "Event " << jentry << ": 9 and EMU flagged HCAL TP is close to a EMU flagged L1 LLP jet which is at ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi << std::endl;
+	    //std::cout << "Event " << jentry << ": 9 and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << adj_iphi <<  " LLP Jet ieta , iphi  " << LLP_jet_ieta << " , " << LLP_jet_iphi <<  std::endl;
 	              }
         } // FG bit 6:1 LUT logic
-      } 
+        }
+      }
+      } // out endl
+      out << std::endl;
+      out.close();
     }// closes if 'emuOn' is true
 
     if (hwOn) {
@@ -523,11 +586,18 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       if (jetET_all_central.find(QIEdelay) == jetET_all_central.end()) jetET_all_central[QIEdelay] = new TH1F(Form("JetEt_all_central_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
       if (jetET_hwQual_central.find(QIEdelay) == jetET_hwQual_central.end()) jetET_hwQual_central[QIEdelay] = new TH1F(Form("JetEt_hwQual_central_delay%d",QIEdelay),axD.c_str(),nJetBins/10, jetLo, jetHi);
 
+	std::ofstream out ("L1Ntuple_Event_RAW.txt", std::ios::app);
+	//std::ofstream out ("L1Ntuple_jet_RAW.txt", std::ios::app);
+	if (out.is_open()){
+	
       for (uint jetIt = 0; jetIt < nJet; jetIt++) {
 	jet_ieta[jetIt] = l1hw_->jetIEta[jetIt];
 	jet_iphi[jetIt] = l1hw_->jetIPhi[jetIt];
+	LLP_jet_ieta = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
+	LLP_jet_iphi = (l1hw_->jetIPhi[jetIt] + 1) / 2;
+	//out << "L1 Event " << jentry << ": RAW L1 jet has HwQual set, ieta, iphi: " << LLP_jet_ieta << ", " << LLP_jet_iphi << " Energy "<< l1hw_->jetEt[jetIt] << std::endl;
 
-	if (abs(jet_ieta[jetIt]) < 16) { // look at jets with hwQual set, and jets must be in HB
+	if (abs(jet_ieta[jetIt]) < 29) { // look at jets with hwQual set, and jets must be in HB
 	  jetET_all[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	  llp_all->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
 	  if (abs(jet_ieta[jetIt]) <= 8) {
@@ -535,10 +605,10 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	    jetET_all_central[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	  }
 	  if (l1hw_->jetHwQual[jetIt] == 1) {
-	    LLP_jet_ieta = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
 	    //std::cout << "Event " << jentry << " ieta correct " << LLP_jet_ieta<< " ieta" << l1hw_->jetIEta[jetIt] << std::endl;
-	    LLP_jet_iphi = (l1hw_->jetIPhi[jetIt] + 1) / 2;
-	    std::cout << "Event " << jentry << ": RAW L1 jet has HwQual set, in HB and the ieta, iphi is " << l1hw_->jetIEta[jetIt] << ", " << l1hw_->jetIPhi[jetIt] << " corrected ieta, iphi = " << LLP_jet_ieta << ", " << LLP_jet_iphi << std::endl;
+	    out << "L1 Event " << jentry << ": RAW L1 jet has HwQual set, ieta, iphi: " << LLP_jet_ieta << ", " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
+	    //std::cout << "L1 Event " << jentry << ": RAW L1 jet has HwQual set, ieta, iphi: " << LLP_jet_ieta << ", " << LLP_jet_iphi << std::endl;
+	    std::cout << "L1 Event " << jentry << ": RAW L1 jet has HwQual set, in HB and the ieta, iphi is " << l1hw_->jetIEta[jetIt] << ", " << l1hw_->jetIPhi[jetIt] << " corrected ieta, iphi = " << LLP_jet_ieta << ", " << LLP_jet_iphi << std::endl;
 	    jetET_hwQual[QIEdelay]->Fill(l1hw_->jetEt[jetIt]); // distribution of jet ET for jets with hwQual set, for one value of QIE delay
 	    llp_QIEdelay->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
 	    if (abs(jet_ieta[jetIt]) <= 8) {
@@ -548,7 +618,6 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	  }
 	}
       } // jet loop
-    
       int nTower = l1CThw_->nTower;
       //if (nTower > 0 ) std::cout << "Event " << jentry << ": nTower = " << nTower << std::endl;
       for (int towers = 0; towers < nTower; towers++) {
@@ -560,8 +629,10 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	if (abs(l1CThw_->ieta[towers]) < 16) CT_hwQual_HB->Fill(l1CThw_->iqual[towers],1);
 	if (abs(l1CThw_->ieta[towers]) >= 16 && abs(l1CThw_->ieta[towers]) < 29) CT_hwQual_HE->Fill(l1CThw_->iqual[towers],1); // 0 if over 16
 	if ( (l1CThw_->iqual[towers] & 0b0100) >> 2 == 1) { // if tower hwQual is set
-	  if (abs(l1CThw_->ieta[towers]) < 16) {
+	  if (abs(l1CThw_->ieta[towers]) < 29) {
 	    CT_LLPhwQual_HB->Fill(QIEdelay,1);
+	     std::cout << "L1 Event " << jentry << ": RAW CaloTower flagged ieta, iphi: " << l1CThw_->ieta[towers] << ", " << l1CThw_->iphi[towers] << " Energy " << l1CThw_->iet[towers] << std::endl;
+	     out << "L1 Event " << jentry << ": RAW CaloTower flagged ieta, iphi: " << l1CThw_->ieta[towers] << ", " << l1CThw_->iphi[towers] <<" Energy " << l1CThw_->iet[towers] << std::endl;
 	    //if (abs(l1CThw_->ieta[towers] - LLP_jet_ieta) < 5 && abs(l1CThw_->iphi[towers] - LLP_jet_iphi) < 5) std::cout << "Event " << jentry << ": and RAW calo tower flagged with hwqual close to RAW nJets with ieta, iphi = " << l1CThw_->ieta[towers] << ", " << l1CThw_->iphi[towers] << std::endl;
 	 if ( ieta_number == l1CThw_->ieta[towers] ){
 	  //  std::cout << "delta_phi = EMU calo tower - RAW calo tower " << iphi_emucalo - l1CThw_->iphi[towers] << " ieta " << l1CThw_->ieta[towers] << " iphi emucalo " << iphi_emucalo << " iphi RAW calo " << l1CThw_->iphi[towers] << std::endl;
@@ -570,24 +641,59 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	  if (abs(l1CThw_->ieta[towers]) >= 16 && abs(l1CThw_->ieta[towers]) < 29) CT_LLPhwQual_HE->Fill(QIEdelay,1); // 0 if over 16
 	}
       }
-
+      
+//      int TPenergy[32][72];
       int nHCALTP = l1TPhw_->nHCALTP;
+//    for (int tps = 0; tps < nHCALTP; tps++) {
+//      int energy = l1TPhw_->hcalTPcompEt[tps];
+//      int ieta = l1TPhw_->hcalTPieta[tps];
+//      if (abs(l1TPhw_->hcalTPieta[tps]) <= 29 ){
+//      if (ieta > 0) ieta += 28;
+//      if (ieta < 0) ieta += 29;
+//      int iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
+//      if (iphi > 72) iphi -= 72;
+//      TPenergy[ieta][iphi] = energy;
+//        }
+//    }
+
       for (int tps = 0; tps < nHCALTP; tps++) {
 	int fg0 = l1TPhw_->hcalTPfineGrain0[tps]; 
 	int fg1 = l1TPhw_->hcalTPfineGrain1[tps];
 	int fg2 = l1TPhw_->hcalTPfineGrain2[tps];
 	int fg3 = l1TPhw_->hcalTPfineGrain3[tps];
+	//int fg4 = l1TPhw_->hcalTPfineGrain4[tps];
+	//int fg5 = l1TPhw_->hcalTPfineGrain5[tps];
+	int TPenergy = l1TPhw_->hcalTPcompEt[tps];
+	int adj_iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
+	if (adj_iphi > 72) adj_iphi -= 72;
 	if (abs(l1TPhw_->hcalTPieta[tps]) < 16) TP_FG_HB->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));
         if (abs(l1TPhw_->hcalTPieta[tps]) >= 16 && abs(l1TPhw_->hcalTPieta[tps]) < 29) TP_FG_HE->Fill(fg0 + (fg1 << 1) + (fg2 << 2) + (fg3 << 3));  // 0 if over 16
+        if (l1TPhw_->hcalTPieta[tps] >= 9 && l1TPhw_->hcalTPieta[tps] <= 12 && adj_iphi == 53) continue;
+        if (abs(l1TPhw_->hcalTPieta[tps]) <= 29 ){
+        // find the energy for this tower
+           int ieta = l1TPhw_->hcalTPieta[tps];
+           if (ieta > 0) ieta += 28;
+           if (ieta < 0) ieta += 29;
+           int adj_iphi = l1TPhw_->hcalTPiphi[tps]; // add the iphi correction for FG bits here
+           
+           adj_iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
+           if (adj_iphi > 72) adj_iphi -= 72;
+        
+        if ((fg0 + fg1 + fg2 + fg3 ) > 0) std::cout << "L1 Event " << jentry << ": RAW HCAL TP tower with set FG bits (" << fg0 << fg1 << fg2 << fg3<<  "), with TP ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
+        if ((fg0 + fg1 + fg2 + fg3 ) > 0) out << "L1 Event " << jentry << ": RAW HCAL TP tower with set FG bits (" << fg0 << fg1 << fg2 << fg3<<  "), with TP ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
 	if (fg0 || (!fg1 && (fg2 || fg3))) {
-	  int adj_iphi = 72 - l1TPhw_->hcalTPiphi[tps] + 18;
-          if (adj_iphi > 72) adj_iphi -= 72;
+          std::cout << "L1 Event " << jentry << ": RAW flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP ieta, iphi "<< l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
+          out << "L1 Event " << jentry << ": RAW flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP ieta, iphi "<< l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << " Energy " << TPenergy << std::endl;
 	  //if (LLP_jet_ieta != -999) std::cout << "Event " << jentry << ": RAW flagged HCAL TP tower based on FG logic (" << fg0 << fg1 << fg2 << fg3<< "), with TP ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << l1TPhw_->hcalTPiphi[tps] << " (adjusted to match with HCAL ntuple iphi " << adj_iphi << ")" << std::endl;
 	  if (abs(l1TPhw_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(adj_iphi - LLP_jet_iphi) < 5) {
-	    std::cout << "Event " << jentry << ": and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << std::endl;
+	    //std::cout << "Event " << jentry << ": and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << adj_iphi << std::endl;
 	  }
 	} // FG bit 6:1 LUT logic
       }
+      }
+      } //end file 
+      out << std::endl;
+      out.close();
     }
 
   }// closes loop through events

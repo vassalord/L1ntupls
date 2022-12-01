@@ -112,22 +112,32 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   }
   std::string inputFile(inputFileDirectory);
   inputFile += "/L1Ntuple*.root";
-
+  
+  
+  std::string inputFile_m4(inputFileDirectory);
+  inputFile_m4 += "/L1Ntuple_QIEdelay-4*.root";
   std::string inputFile_m2(inputFileDirectory);
   inputFile_m2 += "/L1Ntuple_QIEdelay-2*.root";
   std::string inputFile_2(inputFileDirectory);
   inputFile_2 += "/L1Ntuple_QIEdelay2*.root";
+  std::string inputFile_0(inputFileDirectory);
+  inputFile_0 += "/L1Ntuple_QIEdelay0*.root";
   std::string inputFile_4(inputFileDirectory);
   inputFile_4 += "/L1Ntuple_QIEdelay4*.root";
   std::string inputFile_6(inputFileDirectory);
   inputFile_6 += "/L1Ntuple_QIEdelay6*.root";
   std::string inputFile_8(inputFileDirectory);
   inputFile_8 += "/L1Ntuple_QIEdelay8*.root";
+  std::string inputFile_10(inputFileDirectory);
+  inputFile_10 += "/L1Ntuple_QIEdelay10*.root";
+  std::cout << inputFile_m4 << std::endl;
   std::cout << inputFile_m2 << std::endl;
   std::cout << inputFile_2 << std::endl;
+  std::cout << inputFile_0 << std::endl;
   std::cout << inputFile_4 << std::endl;
   std::cout << inputFile_6 << std::endl;
   std::cout << inputFile_8 << std::endl;
+  std::cout << inputFile_10 << std::endl;
   std::string outputDirectory = "emu";  //***runNumber, triggerType, version, hw/emu/both***MAKE SURE IT EXISTS
   std::string outputFilename = "l1analysis_def.root";
   if(newConditions) outputFilename = "l1analysis_new_cond.root";
@@ -157,77 +167,112 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   // make trees
   std::cout << "Loading up the TChain..." << std::endl;
   TChain * eventTree = new TChain("l1EventTree/L1EventTree");
+  eventTree->Add(inputFile_m4.c_str());
+  int nentries_m4 = eventTree->GetEntries();
+  QIEdelay_order.push_back(std::make_tuple(-4, std::make_tuple(nentries_m4, nentries_m4)));
+  
   eventTree->Add(inputFile_m2.c_str());
   int nentries_m2 = eventTree->GetEntries();
-  QIEdelay_order.push_back(std::make_tuple(-2, std::make_tuple(nentries_m2, nentries_m2)));
+  QIEdelay_order.push_back(std::make_tuple(-2, std::make_tuple(nentries_m2 - nentries_m4, nentries_m2)));
+  
+  eventTree->Add(inputFile_0.c_str());
+  int nentries_0 = eventTree->GetEntries();
+  QIEdelay_order.push_back(std::make_tuple(0, std::make_tuple(nentries_0 - nentries_m2, nentries_0)));
+  
   eventTree->Add(inputFile_2.c_str());
   int nentries_2 = eventTree->GetEntries();
-  QIEdelay_order.push_back(std::make_tuple(2, std::make_tuple(nentries_2 - nentries_m2, nentries_2)));
+  QIEdelay_order.push_back(std::make_tuple(2, std::make_tuple(nentries_2 - nentries_0, nentries_2)));
+  
   eventTree->Add(inputFile_4.c_str());
   int nentries_4 = eventTree->GetEntries();
   QIEdelay_order.push_back(std::make_tuple(4, std::make_tuple(nentries_4 - nentries_2, nentries_4)));
+  
   eventTree->Add(inputFile_6.c_str());
   int nentries_6 = eventTree->GetEntries();
   QIEdelay_order.push_back(std::make_tuple(6, std::make_tuple(nentries_6 - nentries_4, nentries_6)));
+  
   eventTree->Add(inputFile_8.c_str());
   int nentries_8 = eventTree->GetEntries();
   QIEdelay_order.push_back(std::make_tuple(8, std::make_tuple(nentries_8 - nentries_6, nentries_8)));
+  
+  eventTree->Add(inputFile_10.c_str());
+  int nentries_10 = eventTree->GetEntries();
+  QIEdelay_order.push_back(std::make_tuple(10, std::make_tuple(nentries_10 - nentries_8, nentries_10)));
+  
   for (uint i=0; i<QIEdelay_order.size(); i++) std::cout << std::get<0>(QIEdelay_order[i]) << " = QIE delay, which has nentries = " << std::get<0>(std::get<1>(QIEdelay_order[i])) << " out of total entries = " << std::get<1>(std::get<1>(QIEdelay_order[i])) << std::endl;
 
   // L1 jets
   TChain * treeL1emu = new TChain("l1UpgradeEmuTree/L1UpgradeTree");
   if (emuOn){
+    treeL1emu->Add(inputFile_m4.c_str());
     treeL1emu->Add(inputFile_m2.c_str());
+    treeL1emu->Add(inputFile_0.c_str());
     treeL1emu->Add(inputFile_2.c_str());
     treeL1emu->Add(inputFile_4.c_str());
     treeL1emu->Add(inputFile_6.c_str());
     treeL1emu->Add(inputFile_8.c_str());
+    treeL1emu->Add(inputFile_10.c_str());
   }
   TChain * treeL1hw = new TChain("l1UpgradeTree/L1UpgradeTree");
   if (hwOn){
     //    treeL1hw->Add(inputFile.c_str());
+    treeL1hw->Add(inputFile_m4.c_str());
     treeL1hw->Add(inputFile_m2.c_str());
+    treeL1hw->Add(inputFile_0.c_str());
     treeL1hw->Add(inputFile_2.c_str());
     treeL1hw->Add(inputFile_4.c_str());
     treeL1hw->Add(inputFile_6.c_str());
     treeL1hw->Add(inputFile_8.c_str());
+    treeL1hw->Add(inputFile_10.c_str());
   }
   // Calo towers
   TChain * treeL1TPemu = new TChain("l1CaloTowerEmuTree/L1CaloTowerTree");
   if (emuOn) {
     //    treeL1TPemu->Add(inputFile.c_str());
+    treeL1TPemu->Add(inputFile_m4.c_str());
     treeL1TPemu->Add(inputFile_m2.c_str());
+    treeL1TPemu->Add(inputFile_0.c_str());
     treeL1TPemu->Add(inputFile_2.c_str());
     treeL1TPemu->Add(inputFile_4.c_str());
     treeL1TPemu->Add(inputFile_6.c_str());
     treeL1TPemu->Add(inputFile_8.c_str());
+    treeL1TPemu->Add(inputFile_10.c_str());
   }
   TChain * treeL1TPhw = new TChain("l1CaloTowerTree/L1CaloTowerTree");
   if (hwOn) {
     //    treeL1TPhw->Add(inputFile.c_str());
+    treeL1TPhw->Add(inputFile_m4.c_str());
     treeL1TPhw->Add(inputFile_m2.c_str());
+    treeL1TPhw->Add(inputFile_0.c_str());
     treeL1TPhw->Add(inputFile_2.c_str());
     treeL1TPhw->Add(inputFile_4.c_str());
     treeL1TPhw->Add(inputFile_6.c_str());
     treeL1TPhw->Add(inputFile_8.c_str());
+    treeL1TPhw->Add(inputFile_10.c_str());
   }
   TChain * treeL1CTemu = new TChain("l1CaloTowerEmuTree/L1CaloTowerTree");
   if (emuOn) {
     //    treeL1CTemu->Add(inputFile.c_str());
+    treeL1CTemu->Add(inputFile_m4.c_str());
     treeL1CTemu->Add(inputFile_m2.c_str());
+    treeL1CTemu->Add(inputFile_0.c_str());
     treeL1CTemu->Add(inputFile_2.c_str());
     treeL1CTemu->Add(inputFile_4.c_str());
     treeL1CTemu->Add(inputFile_6.c_str());
     treeL1CTemu->Add(inputFile_8.c_str());
+    treeL1CTemu->Add(inputFile_10.c_str());
   }
   TChain * treeL1CThw = new TChain("l1CaloTowerTree/L1CaloTowerTree");
   if (hwOn) {
     //    treeL1CThw->Add(inputFile.c_str());
+    treeL1CThw->Add(inputFile_m4.c_str());
     treeL1CThw->Add(inputFile_m2.c_str());
+    treeL1CThw->Add(inputFile_0.c_str());
     treeL1CThw->Add(inputFile_2.c_str());
     treeL1CThw->Add(inputFile_4.c_str());
     treeL1CThw->Add(inputFile_6.c_str());
-    treeL1CThw->Add(inputFile_8.c_str()); 
+    treeL1CThw->Add(inputFile_8.c_str());
+    treeL1CThw->Add(inputFile_10.c_str());
   }
 
   L1Analysis::L1AnalysisEventDataFormat    *event_ = new L1Analysis::L1AnalysisEventDataFormat();
@@ -353,28 +398,28 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   //  std::map<int, TH1F*> llp_all;
   //  std::map<int, TH1F*> llp_all_central;
   //  TH1F *jetET_all = new TH1F( "JetEt_all" , axD.c_str(),nJetBins/10, jetLo, jetHi);
-  TH1F *llp_all = new TH1F( "LLPqieDelay_all" , "LLP Jet Efficiency;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_all_central = new TH1F( "LLPqieDelay_central_all" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_zero_central = new TH1F( "LLPqieDelay_FG_central_zero" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_zero = new TH1F( "LLPqieDelay_FG_zero" , "LLP Tower Efficiency;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_other_central = new TH1F( "LLPqieDelay_FG_central_other" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_other = new TH1F( "LLPqieDelay_FG_other" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_all = new TH1F( "LLPqieDelay_FG_all" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_all_central = new TH1F( "LLPqieDelay_FG_all_central" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_fg123 = new TH1F( "LLPqieDelay_FG_fg123" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_FG_QIEdelay_fg0123 = new TH1F( "LLPqieDelay_FG_fg0123" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_all = new TH1F( "LLPqieDelay_all" , "LLP Jet Efficiency;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_all_central = new TH1F( "LLPqieDelay_central_all" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_zero_central = new TH1F( "LLPqieDelay_FG_central_zero" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_zero = new TH1F( "LLPqieDelay_FG_zero" , "LLP Tower Efficiency;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_central = new TH1F( "LLPqieDelay_FG_central_other" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other = new TH1F( "LLPqieDelay_FG_other" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_all = new TH1F( "LLPqieDelay_FG_all" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_all_central = new TH1F( "LLPqieDelay_FG_all_central" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123 = new TH1F( "LLPqieDelay_FG_fg123" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg0123 = new TH1F( "LLPqieDelay_FG_fg0123" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
   
   // emu
-   TH1F *llp_all_emu = new TH1F( "LLPqieDelay_all_emu" , "LLP Jet Efficiency;QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_all_central_emu = new TH1F( "LLPqieDelay_central_all_emu" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_zero_central_emu = new TH1F( "LLPqieDelay_FG_central_zero_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_zero_emu = new TH1F( "LLPqieDelay_FG_zero_emu" , "LLP Tower Efficiency;QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_other_central_emu = new TH1F( "LLPqieDelay_FG_central_other_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_other_emu = new TH1F( "LLPqieDelay_FG_other_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_all_emu = new TH1F( "LLPqieDelay_FG_all_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_all_central_emu = new TH1F( "LLPqieDelay_FG_all_central_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_fg123_emu = new TH1F( "LLPqieDelay_FG_fg123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
-   TH1F *llp_FG_QIEdelay_fg0123_emu = new TH1F( "LLPqieDelay_FG_fg0123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 11, -2, 9);
+   TH1F *llp_all_emu = new TH1F( "LLPqieDelay_all_emu" , "LLP Jet Efficiency;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_all_central_emu = new TH1F( "LLPqieDelay_central_all_emu" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_zero_central_emu = new TH1F( "LLPqieDelay_FG_central_zero_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_zero_emu = new TH1F( "LLPqieDelay_FG_zero_emu" , "LLP Tower Efficiency;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_other_central_emu = new TH1F( "LLPqieDelay_FG_central_other_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_other_emu = new TH1F( "LLPqieDelay_FG_other_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_all_emu = new TH1F( "LLPqieDelay_FG_all_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_all_central_emu = new TH1F( "LLPqieDelay_FG_all_central_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu = new TH1F( "LLPqieDelay_FG_fg123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg0123_emu = new TH1F( "LLPqieDelay_FG_fg0123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
   // l1 jets
   std::map<int, TH1F*> jetET_hwQual;
   std::map<int, TH1F*> jetET_hwQual_central;
@@ -384,15 +429,15 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   //  std::map<int, TH1F*> llp_QIEdelay;
   //  std::map<int, TH1F*> llp_QIEdelay_central;
   //  TH1F *jetET_hwQual = new TH1F( "JetEt_hwQual" , axD.c_str(),nJetBins/10, jetLo, jetHi);
-  TH1F *llp_QIEdelay = new TH1F( "LLPqieDelay" , "LLP Jet Efficiency;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_QIEdelay_central = new TH1F( "LLPqieDelay_central" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_QIEdelay = new TH1F( "LLPqieDelay" , "LLP Jet Efficiency;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_QIEdelay_central = new TH1F( "LLPqieDelay_central" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
   
-  TH1F *llp_QIEdelay_emu = new TH1F( "LLPqieDelay_emu" , "LLP Jet Efficiency;QIE Delay (ns);", 11, -2, 9);
-  TH1F *llp_QIEdelay_central_emu = new TH1F( "LLPqieDelay_central_emu" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 11, -2, 9);
+  TH1F *llp_QIEdelay_emu = new TH1F( "LLPqieDelay_emu" , "LLP Jet Efficiency;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_QIEdelay_central_emu = new TH1F( "LLPqieDelay_central_emu" , "LLP Jet Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
 
   // calo towers
-  TH1F *CT_LLPhwQual_HB = new TH1F( "TT_LLPhwQual_HB", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 11, -2, 9);
-  TH1F *CT_LLPhwQual_HE = new TH1F( "TT_LLPhwQual_HE", "TPs with hwQual set (HE);QIE Delay (ns); # Entries", 11, -2, 9);
+  TH1F *CT_LLPhwQual_HB = new TH1F( "TT_LLPhwQual_HB", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 15, -4, 11);
+  TH1F *CT_LLPhwQual_HE = new TH1F( "TT_LLPhwQual_HE", "TPs with hwQual set (HE);QIE Delay (ns); # Entries", 15, -4, 11);
   TH1F *CT_hwQual_HB = new TH1F( "TT_hwQual_HB", "TPs with hwQual set (HB);Tower hwQual; # Entries", 16, 0, 16);
   TH1F *CT_hwQual_HE = new TH1F( "TT_hwQual_HE", "TPs with hwQual set (HE);Tower hwQual; # Entries", 16, 0, 16);
 
@@ -491,7 +536,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
         jet_ieta[jetIt] = (abs(l1emu_->jetIEta[jetIt])+1)/2*(l1emu_->jetIEta[jetIt]/abs(l1emu_->jetIEta[jetIt]));
         jet_iphi[jetIt] = (l1emu_->jetIPhi[jetIt] + 1) / 2;
         if (abs(jet_ieta[jetIt]) <= 16) { // look at jets with hwQual set, and jets must be in HB
-    	  //if (l1emu_->jetEt[jetIt] > 30){
+    	  if (l1emu_->jetEt[jetIt] > 20){
     	    jetET_all_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    jetieta_all_emu[QIEdelay]->Fill(jet_ieta[jetIt]);
     	    llp_all_emu->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
@@ -499,13 +544,13 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     	       llp_all_central_emu->Fill(QIEdelay,1);
     	       jetET_all_central_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    }
-    	//} // end of jet energy is over 4 gev
+    	} // end of jet energy is over 20 gev
     	
     	if(l1emu_->jetHwQual[jetIt] == 1 ) {
     	    LLP_jet_ieta = jet_ieta[jetIt];
     	    LLP_jet_iphi = jet_iphi[jetIt];
     	    jetieta_LLP_emu[QIEdelay]->Fill(jet_ieta[jetIt]);
-    	    //std::cout << "Event " << jentry << " EMU jet ieta, iphi flagged " << jet_ieta[jetIt] << " , " <<  jet_iphi[jetIt] << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
+    	    std::cout << "Event " << jentry << " EMU jet ieta, iphi flagged " << jet_ieta[jetIt] << " , " <<  jet_iphi[jetIt] << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
     	    jetET_hwQual_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    llp_QIEdelay_emu->Fill(QIEdelay,1);
 
@@ -567,14 +612,14 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
              corr_iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
              if (corr_iphi > 72) corr_iphi -= 72;
 
-             if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
+             //if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
 
             llp_FG_QIEdelay_all_emu->Fill(QIEdelay,1);
             jetFG_ieta_allp_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             if (abs(l1TPemu_->hcalTPieta[tps]) <= 8){
                llp_FG_QIEdelay_all_central_emu->Fill(QIEdelay,1);
             }
-            } // end of requiring tower is over 4 gev
+            //} // end of requiring tower is over 4 gev
             if (fg1 || fg2 || fg3) {
             	jetFG_ieta_fg123_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	llp_FG_QIEdelay_fg123_emu->Fill(QIEdelay,1);
@@ -583,7 +628,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
             	    jetFG_ieta_all_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123_emu->Fill(QIEdelay,1);
             		if (abs(l1TPemu_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi - LLP_jet_iphi) < 5) {
-            		//std::cout << "Event " << jentry << ": 9 and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << corr_iphi << " Energy " << TPenergy[ieta][corr_iphi] << std::endl;
+            		std::cout << "Event " << jentry << ": and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << corr_iphi << " Energy " << TPenergy[ieta][corr_iphi] << std::endl;
             		}
             	    if (fg0 == 1){
             	        jetFG_ieta_zero_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
@@ -633,7 +678,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	jet_iphi[jetIt] = (l1hw_->jetIPhi[jetIt]+1)/2;
 	
 	if (abs(jet_ieta[jetIt]) <= 16) { // look at jets with hwQual set, and jets must be in HB
-	  //if (l1hw_->jetEt[jetIt] > 30){
+	  if (l1hw_->jetEt[jetIt] > 20){
 	    jetET_all[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    jetieta_all[QIEdelay]->Fill(jet_ieta[jetIt]);
 	    llp_all->Fill(QIEdelay,1); // what QIE delay are LLP jets found at
@@ -641,13 +686,13 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 		llp_all_central->Fill(QIEdelay,1);
 		jetET_all_central[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    }
-	  //} // end of jet energy is over 4 gev
+	  } // end of jet energy is over 4 gev
 	
 	if(l1hw_->jetHwQual[jetIt] == 1 ) {
 	    LLP_jet_ieta = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
 	    LLP_jet_iphi = (l1hw_->jetIPhi[jetIt] + 1) / 2;
 	    jetieta_LLP[QIEdelay]->Fill(jet_ieta[jetIt]);
-	    //std::cout << "Event " << jentry << " RAW jet ieta, iphi flagged  " << LLP_jet_ieta << " ,  " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
+	    std::cout << "Event " << jentry << " RAW jet ieta, iphi flagged  " << LLP_jet_ieta << " ,  " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
 	    jetET_hwQual[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    llp_QIEdelay->Fill(QIEdelay,1);
 	    
@@ -693,14 +738,14 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     		if (corr_iphi%4 == 1 || corr_iphi%4 == 2)  corr_iphi_fix -= 2;
     		if (corr_iphi%4 == 3 || corr_iphi%4 == 0)  corr_iphi_fix += 2;
     		
-    		if (TPenergy[ieta][corr_iphi_fix] > 4) { // require tower energy > 4 to make efficiency plots
+    		//if (TPenergy[ieta][corr_iphi_fix] > 4) { // require tower energy > 4 to make efficiency plots
     	    
     		llp_FG_QIEdelay_all->Fill(QIEdelay,1);
     		jetFG_ieta_allp[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
     		if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
     		    llp_FG_QIEdelay_all_central->Fill(QIEdelay,1);
             	}
-            	} // end of requiring tower is over 4 gev
+            	//} // end of requiring tower is over 4 gev
             	if (fg1 || fg2 || fg3) {
             	jetFG_ieta_fg123[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             	llp_FG_QIEdelay_fg123->Fill(QIEdelay,1);
@@ -709,7 +754,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
             	    jetFG_ieta_all[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123->Fill(QIEdelay,1);
             	    if (abs(l1TPhw_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi_fix - LLP_jet_iphi) < 5) {
-            	     //std::cout << "Event " << jentry << ": 9 and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << corr_iphi_fix << " Energy " << TPenergy[ieta][corr_iphi_fix] << std::endl;
+            	     std::cout << "Event " << jentry << ": and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << corr_iphi_fix << " Energy " << TPenergy[ieta][corr_iphi_fix] << std::endl;
             	    }
                     if (fg0 == 1){
             		jetFG_ieta_zero[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
