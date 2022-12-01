@@ -43,7 +43,7 @@ void JetEffs() {
   c1->SetGrid();
   gStyle->SetOptStat(0);
 
-  TFile *f1 = TFile::Open("../l1analysis_new_cond.root");
+  TFile *f1 = TFile::Open("../bin/l1analysis_new_cond.root");
 
   for (int delay = -4; delay <= 10; delay += 2) {
     //if (delay == 0) continue;
@@ -309,7 +309,7 @@ void JetEffs() {
     TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev (RAW)",delay));
+    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d (RAW)",delay));
     h9->GetXaxis()->SetTitle("TP i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);

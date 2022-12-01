@@ -307,7 +307,7 @@ void JetEffs_emu() {
     TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d, E > 4 Gev, (EMU)",delay));
+    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d (EMU)",delay));
     h9->GetXaxis()->SetTitle("TP i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
