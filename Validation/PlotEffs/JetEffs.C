@@ -654,6 +654,116 @@ void JetEffs() {
     char saveFile4[100];
     sprintf(saveFile4,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_zero_fg0123.pdf");
     c1->SaveAs(saveFile4);
+    
+    // for jet ET and hwQual all delay
+    
+    TH1F *h28 = (TH1F*)f1->Get("JetEt_all_delay-4");
+    TH1F *h29 = (TH1F*)f1->Get("JetEt_all_delay-2");
+    TH1F *h30 = (TH1F*)f1->Get("JetEt_all_delay0");
+    TH1F *h31 = (TH1F*)f1->Get("JetEt_all_delay2");
+    TH1F *h32 = (TH1F*)f1->Get("JetEt_all_delay4");
+    TH1F *h33 = (TH1F*)f1->Get("JetEt_all_delay6");
+    TH1F *h34 = (TH1F*)f1->Get("JetEt_all_delay8");
+    TH1F *h35 = (TH1F*)f1->Get("JetEt_all_delay10");
+    
+    TH1F *h36 = (TH1F*)f1->Get("JetEt_hwQual_delay-4");
+    TH1F *h37 = (TH1F*)f1->Get("JetEt_hwQual_delay-2");
+    TH1F *h38 = (TH1F*)f1->Get("JetEt_hwQual_delay0");
+    TH1F *h39 = (TH1F*)f1->Get("JetEt_hwQual_delay2");
+    TH1F *h40 = (TH1F*)f1->Get("JetEt_hwQual_delay4");
+    TH1F *h41 = (TH1F*)f1->Get("JetEt_hwQual_delay6");
+    TH1F *h42 = (TH1F*)f1->Get("JetEt_hwQual_delay8");
+    TH1F *h43 = (TH1F*)f1->Get("JetEt_hwQual_delay10");
+    
+    h28->SetLineColorAlpha(kWhite, 1.);
+    h28->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T} (RAW)"));
+    h28->GetXaxis()->SetTitle("Jet E_{T} [GeV]");
+    h28->GetXaxis()->SetTitleSize(0.045);
+    h28->GetXaxis()->SetTitleOffset(1.1);
+    h28->GetYaxis()->SetTitle("Jet Efficiency");
+    h28->GetYaxis()->SetTitleSize(0.045);
+    h28->GetYaxis()->SetTitleOffset(1.15);
+    h28->GetYaxis()->SetRangeUser(0.,0.08);
+    h28->GetXaxis()->SetRangeUser(0,400);
+    h28->Draw();
+    
+    c1->Update();
+    c1->RedrawAxis();
+    
+    TEfficiency* pEff13 = 0;
+    TEfficiency* pEff14 = 0;
+    TEfficiency* pEff15 = 0;
+    TEfficiency* pEff16 = 0;
+    TEfficiency* pEff17 = 0;
+    TEfficiency* pEff18 = 0;
+    TEfficiency* pEff19 = 0;
+    TEfficiency* pEff20 = 0;
+    
+    if(TEfficiency::CheckConsistency(*h36,*h28) && TEfficiency::CheckConsistency(*h37,*h29) && TEfficiency::CheckConsistency(*h38,*h30) && TEfficiency::CheckConsistency(*h39,*h31) && TEfficiency::CheckConsistency(*h40,*h32) && TEfficiency::CheckConsistency(*h41,*h33) && TEfficiency::CheckConsistency(*h42,*h34) && TEfficiency::CheckConsistency(*h43,*h35))
+            {
+                std::cout << "about to do vs Et plots" << std::endl;
+                pEff13 = new TEfficiency(*h36,*h28);
+                pEff13->SetLineWidth(3.);
+                pEff13->SetLineColor(kRed);
+                pEff13->Draw("same");
+                
+                pEff14 = new TEfficiency(*h37,*h29);
+                pEff14->SetLineWidth(3.);
+                pEff14->SetLineColor(kOrange-3);
+                pEff14->Draw("same");
+                
+                pEff15 = new TEfficiency(*h38,*h30);
+                pEff15->SetLineWidth(3.);
+                pEff15->SetLineColor(kYellow-3);
+                pEff15->Draw("same");
+                
+                pEff16 = new TEfficiency(*h39,*h31);
+                pEff16->SetLineWidth(3.);
+                pEff16->SetLineColor(kGreen);
+                pEff16->Draw("same");
+                
+                pEff17 = new TEfficiency(*h40,*h32);
+                pEff17->SetLineWidth(3.);
+                pEff17->SetLineColor(kBlue);
+                pEff17->Draw("same");
+                
+                pEff18 = new TEfficiency(*h41,*h33);
+                pEff18->SetLineWidth(3.);
+                pEff18->SetLineColor(kAzure+6);
+                pEff18->Draw("same");
+                
+                pEff19 = new TEfficiency(*h42,*h34);
+                pEff19->SetLineWidth(3.);
+                pEff19->SetLineColor(kBlack);
+                pEff19->Draw("same");
+                
+                pEff20 = new TEfficiency(*h43,*h35);
+                pEff20->SetLineWidth(3.);
+                pEff20->SetLineColor(kGray);
+                pEff20->Draw("same");
+                
+            }
+    TLegend *legend7 = new TLegend(0.15, 0.7, 0.6, 0.8);
+    legend7->SetTextFont(42);
+    legend7->SetLineColor(0);
+    legend7->SetTextSize(0.02);
+    legend7->SetFillColor(0);
+    legend7->AddEntry(pEff13, "Delayed L1 jet vs E_{T} delay -4 ", "l");
+    legend7->AddEntry(pEff14, "Delayed L1 jet vs E_{T} delay -2", "l");
+    legend7->AddEntry(pEff15, "Delayed L1 jet vs E_{T} delay 0", "l");
+    legend7->AddEntry(pEff16, "Delayed L1 jet vs E_{T} delay 2", "l");
+    legend7->AddEntry(pEff17, "Delayed L1 jet vs E_{T} delay 4", "l");
+    legend7->AddEntry(pEff18, "Delayed L1 jet vs E_{T} delay 6", "l");
+    legend7->AddEntry(pEff19, "Delayed L1 jet vs E_{T} delay 8", "l");
+    legend7->AddEntry(pEff20, "Delayed L1 jet vs E_{T} delay 10", "l");
+    
+    
+    
+    legend7->Draw("same");
+    
+    char saveFile5[100];
+    sprintf(saveFile5,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Jet_Et_all_delay.pdf");
+    c1->SaveAs(saveFile5);
 
 
 }
