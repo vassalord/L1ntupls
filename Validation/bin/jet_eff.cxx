@@ -367,8 +367,9 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TH1F* ecalTP_emu = new TH1F("ecalTP_emu", ";TP E_{T}; # Entries", nTpBins, tpLo, tpHi);
 
   // calo towers
-  TH1F *CT_LLPhwQual_HB_emu = new TH1F( "TT_LLPhwQual_HB_emu", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 11, -2, 9);
-  TH1F *CT_LLPhwQual_HE_emu = new TH1F( "TT_LLPhwQual_HE_emu", "TPs with hwQual set (HE);QIE Delay (ns); # Entries", 11, -2, 9);
+  TH1F *CT_LLPhwQual_HB_emu = new TH1F( "TT_LLPhwQual_HB_emu", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 15, -4, 11);
+  TH1F *CT_LLP_HB_emu = new TH1F( "TT_LLP_HB_emu", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 15, -4, 11);
+  TH1F *CT_LLPhwQual_HE_emu = new TH1F( "TT_LLPhwQual_HE_emu", "TPs with hwQual set (HE);QIE Delay (ns); # Entries", 15, -4, 11);
   TH1F *CT_hwQual_HB_emu = new TH1F( "TT_hwQual_HB_emu", "TPs with hwQual set (HB);Tower hwQual; # Entries", 16, 0, 16);
   TH1F *CT_hwQual_HE_emu = new TH1F( "TT_hwQual_HE_emu", "TPs with hwQual set (HE);Tower hwQual; # Entries", 16, 0, 16);
 
@@ -382,6 +383,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   std::map<int, TH1F*> jetFG_ieta_zero;
   std::map<int, TH1F*> jetFG_ieta_other;
   std::map<int, TH1F*> jetFG_ieta_allp;
+  std::map<int, TH1F*> jetFG_ieta_allp4;
   std::map<int, TH1F*> jetFG_ieta_fg123;
   
   // emu
@@ -393,6 +395,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   std::map<int, TH1F*> jetFG_ieta_zero_emu;
   std::map<int, TH1F*> jetFG_ieta_other_emu;
   std::map<int, TH1F*> jetFG_ieta_allp_emu;
+  std::map<int, TH1F*> jetFG_ieta_allp4_emu;
   std::map<int, TH1F*> jetFG_ieta_fg123_emu;
   
   //  std::map<int, TH1F*> llp_all;
@@ -405,9 +408,79 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
   TH1F *llp_FG_QIEdelay_other_central = new TH1F( "LLPqieDelay_FG_central_other" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
   TH1F *llp_FG_QIEdelay_other = new TH1F( "LLPqieDelay_FG_other" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
   TH1F *llp_FG_QIEdelay_all = new TH1F( "LLPqieDelay_FG_all" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_all4 = new TH1F( "LLPqieDelay_FG_all4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
   TH1F *llp_FG_QIEdelay_all_central = new TH1F( "LLPqieDelay_FG_all_central" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_all4_central = new TH1F( "LLPqieDelay_FG_all4_central" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
   TH1F *llp_FG_QIEdelay_fg123 = new TH1F( "LLPqieDelay_FG_fg123" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
   TH1F *llp_FG_QIEdelay_fg0123 = new TH1F( "LLPqieDelay_FG_fg0123" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  
+  TH1F *llp_FG_QIEdelay_fg123_m16 = new TH1F( "LLPqieDelay_FG_fg123_-16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m15 = new TH1F( "LLPqieDelay_FG_fg123_-15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m14 = new TH1F( "LLPqieDelay_FG_fg123_-14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m13 = new TH1F( "LLPqieDelay_FG_fg123_-13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m12 = new TH1F( "LLPqieDelay_FG_fg123_-12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m11 = new TH1F( "LLPqieDelay_FG_fg123_-11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m10 = new TH1F( "LLPqieDelay_FG_fg123_-10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m9 = new TH1F( "LLPqieDelay_FG_fg123_-9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m8 = new TH1F( "LLPqieDelay_FG_fg123_-8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m7 = new TH1F( "LLPqieDelay_FG_fg123_-7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m6 = new TH1F( "LLPqieDelay_FG_fg123_-6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m5 = new TH1F( "LLPqieDelay_FG_fg123_-5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m4 = new TH1F( "LLPqieDelay_FG_fg123_-4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m3 = new TH1F( "LLPqieDelay_FG_fg123_-3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m2 = new TH1F( "LLPqieDelay_FG_fg123_-2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_m1 = new TH1F( "LLPqieDelay_FG_fg123_-1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_1 = new TH1F( "LLPqieDelay_FG_fg123_1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_2 = new TH1F( "LLPqieDelay_FG_fg123_2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_3 = new TH1F( "LLPqieDelay_FG_fg123_3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_4 = new TH1F( "LLPqieDelay_FG_fg123_4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_5 = new TH1F( "LLPqieDelay_FG_fg123_5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_6 = new TH1F( "LLPqieDelay_FG_fg123_6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_7 = new TH1F( "LLPqieDelay_FG_fg123_7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_8 = new TH1F( "LLPqieDelay_FG_fg123_8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_9 = new TH1F( "LLPqieDelay_FG_fg123_9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_10 = new TH1F( "LLPqieDelay_FG_fg123_10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_11 = new TH1F( "LLPqieDelay_FG_fg123_11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_12 = new TH1F( "LLPqieDelay_FG_fg123_12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_13 = new TH1F( "LLPqieDelay_FG_fg123_13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_14 = new TH1F( "LLPqieDelay_FG_fg123_14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_15 = new TH1F( "LLPqieDelay_FG_fg123_15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_fg123_16 = new TH1F( "LLPqieDelay_FG_fg123_16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  
+  TH1F *llp_FG_QIEdelay_other_m16 = new TH1F( "LLPqieDelay_FG_other_-16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m15 = new TH1F( "LLPqieDelay_FG_other_-15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m14 = new TH1F( "LLPqieDelay_FG_other_-14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m13 = new TH1F( "LLPqieDelay_FG_other_-13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m12 = new TH1F( "LLPqieDelay_FG_other_-12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m11 = new TH1F( "LLPqieDelay_FG_other_-11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m10 = new TH1F( "LLPqieDelay_FG_other_-10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m9 = new TH1F( "LLPqieDelay_FG_other_-9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m8 = new TH1F( "LLPqieDelay_FG_other_-8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m7 = new TH1F( "LLPqieDelay_FG_other_-7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m6 = new TH1F( "LLPqieDelay_FG_other_-6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m5 = new TH1F( "LLPqieDelay_FG_other_-5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m4 = new TH1F( "LLPqieDelay_FG_other_-4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m3 = new TH1F( "LLPqieDelay_FG_other_-3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m2 = new TH1F( "LLPqieDelay_FG_other_-2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_m1 = new TH1F( "LLPqieDelay_FG_other_-1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_1 = new TH1F( "LLPqieDelay_FG_other_1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_2 = new TH1F( "LLPqieDelay_FG_other_2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_3 = new TH1F( "LLPqieDelay_FG_other_3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_4 = new TH1F( "LLPqieDelay_FG_other_4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_5 = new TH1F( "LLPqieDelay_FG_other_5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_6 = new TH1F( "LLPqieDelay_FG_other_6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_7 = new TH1F( "LLPqieDelay_FG_other_7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_8 = new TH1F( "LLPqieDelay_FG_other_8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_9 = new TH1F( "LLPqieDelay_FG_other_9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_10 = new TH1F( "LLPqieDelay_FG_other_10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_11 = new TH1F( "LLPqieDelay_FG_other_11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_12 = new TH1F( "LLPqieDelay_FG_other_12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_13 = new TH1F( "LLPqieDelay_FG_other_13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_14 = new TH1F( "LLPqieDelay_FG_other_14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_15 = new TH1F( "LLPqieDelay_FG_other_15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  TH1F *llp_FG_QIEdelay_other_16 = new TH1F( "LLPqieDelay_FG_other_16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+  
+  
   
   // emu
    TH1F *llp_all_emu = new TH1F( "LLPqieDelay_all_emu" , "LLP Jet Efficiency;QIE Delay (ns);", 15, -4, 11);
@@ -417,9 +490,79 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
    TH1F *llp_FG_QIEdelay_other_central_emu = new TH1F( "LLPqieDelay_FG_central_other_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
    TH1F *llp_FG_QIEdelay_other_emu = new TH1F( "LLPqieDelay_FG_other_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
    TH1F *llp_FG_QIEdelay_all_emu = new TH1F( "LLPqieDelay_FG_all_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_all4_emu = new TH1F( "LLPqieDelay_FG_all4_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
    TH1F *llp_FG_QIEdelay_all_central_emu = new TH1F( "LLPqieDelay_FG_all_central_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_all4_central_emu = new TH1F( "LLPqieDelay_FG_all4_central_emu" , "LLP Tower Efficiency (central HB);QIE Delay (ns);", 15, -4, 11);
    TH1F *llp_FG_QIEdelay_fg123_emu = new TH1F( "LLPqieDelay_FG_fg123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
    TH1F *llp_FG_QIEdelay_fg0123_emu = new TH1F( "LLPqieDelay_FG_fg0123_emu" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   
+   TH1F *llp_FG_QIEdelay_fg123_emu_m16 = new TH1F( "LLPqieDelay_FG_fg123_emu_-16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m15 = new TH1F( "LLPqieDelay_FG_fg123_emu_-15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m14 = new TH1F( "LLPqieDelay_FG_fg123_emu_-14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m13 = new TH1F( "LLPqieDelay_FG_fg123_emu_-13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m12 = new TH1F( "LLPqieDelay_FG_fg123_emu_-12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m11 = new TH1F( "LLPqieDelay_FG_fg123_emu_-11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m10 = new TH1F( "LLPqieDelay_FG_fg123_emu_-10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m9 = new TH1F( "LLPqieDelay_FG_fg123_emu_-9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m8 = new TH1F( "LLPqieDelay_FG_fg123_emu_-8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m7 = new TH1F( "LLPqieDelay_FG_fg123_emu_-7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m6 = new TH1F( "LLPqieDelay_FG_fg123_emu_-6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m5 = new TH1F( "LLPqieDelay_FG_fg123_emu_-5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m4 = new TH1F( "LLPqieDelay_FG_fg123_emu_-4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m3 = new TH1F( "LLPqieDelay_FG_fg123_emu_-3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m2 = new TH1F( "LLPqieDelay_FG_fg123_emu_-2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_m1 = new TH1F( "LLPqieDelay_FG_fg123_emu_-1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_1 = new TH1F( "LLPqieDelay_FG_fg123_emu_1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_2 = new TH1F( "LLPqieDelay_FG_fg123_emu_2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_3 = new TH1F( "LLPqieDelay_FG_fg123_emu_3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_4 = new TH1F( "LLPqieDelay_FG_fg123_emu_4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_5 = new TH1F( "LLPqieDelay_FG_fg123_emu_5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_6 = new TH1F( "LLPqieDelay_FG_fg123_emu_6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_7 = new TH1F( "LLPqieDelay_FG_fg123_emu_7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_8 = new TH1F( "LLPqieDelay_FG_fg123_emu_8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_9 = new TH1F( "LLPqieDelay_FG_fg123_emu_9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_10 = new TH1F( "LLPqieDelay_FG_fg123_emu_10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_11 = new TH1F( "LLPqieDelay_FG_fg123_emu_11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_12 = new TH1F( "LLPqieDelay_FG_fg123_emu_12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_13 = new TH1F( "LLPqieDelay_FG_fg123_emu_13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_14 = new TH1F( "LLPqieDelay_FG_fg123_emu_14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_15 = new TH1F( "LLPqieDelay_FG_fg123_emu_15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   TH1F *llp_FG_QIEdelay_fg123_emu_16 = new TH1F( "LLPqieDelay_FG_fg123_emu_16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4, 11);
+   
+   
+   TH1F *llp_FG_QIEdelay_other_emu_m16 = new TH1F( "LLPqieDelay_FG_other_emu_-16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m15 = new TH1F( "LLPqieDelay_FG_other_emu_-15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m14 = new TH1F( "LLPqieDelay_FG_other_emu_-14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m13 = new TH1F( "LLPqieDelay_FG_other_emu_-13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m12 = new TH1F( "LLPqieDelay_FG_other_emu_-12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m11 = new TH1F( "LLPqieDelay_FG_other_emu_-11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m10 = new TH1F( "LLPqieDelay_FG_other_emu_-10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m9 = new TH1F( "LLPqieDelay_FG_other_emu_-9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m8 = new TH1F( "LLPqieDelay_FG_other_emu_-8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m7 = new TH1F( "LLPqieDelay_FG_other_emu_-7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m6 = new TH1F( "LLPqieDelay_FG_other_emu_-6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m5 = new TH1F( "LLPqieDelay_FG_other_emu_-5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m4 = new TH1F( "LLPqieDelay_FG_other_emu_-4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m3 = new TH1F( "LLPqieDelay_FG_other_emu_-3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m2 = new TH1F( "LLPqieDelay_FG_other_emu_-2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_m1 = new TH1F( "LLPqieDelay_FG_other_emu_-1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_1 = new TH1F( "LLPqieDelay_FG_other_emu_1" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_2 = new TH1F( "LLPqieDelay_FG_other_emu_2" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_3 = new TH1F( "LLPqieDelay_FG_other_emu_3" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_4 = new TH1F( "LLPqieDelay_FG_other_emu_4" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_5 = new TH1F( "LLPqieDelay_FG_other_emu_5" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_6 = new TH1F( "LLPqieDelay_FG_other_emu_6" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_7 = new TH1F( "LLPqieDelay_FG_other_emu_7" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_8 = new TH1F( "LLPqieDelay_FG_other_emu_8" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_9 = new TH1F( "LLPqieDelay_FG_other_emu_9" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_10 = new TH1F( "LLPqieDelay_FG_other_emu_10" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_11 = new TH1F( "LLPqieDelay_FG_other_emu_11" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_12 = new TH1F( "LLPqieDelay_FG_other_emu_12" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_13 = new TH1F( "LLPqieDelay_FG_other_emu_13" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_14 = new TH1F( "LLPqieDelay_FG_other_emu_14" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_15 = new TH1F( "LLPqieDelay_FG_other_emu_15" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   TH1F *llp_FG_QIEdelay_other_emu_16 = new TH1F( "LLPqieDelay_FG_other_emu_16" , "LLP Tower Efficiency ;QIE Delay (ns);", 15, -4,11);
+   
   // l1 jets
   std::map<int, TH1F*> jetET_hwQual;
   std::map<int, TH1F*> jetET_hwQual_central;
@@ -437,6 +580,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 
   // calo towers
   TH1F *CT_LLPhwQual_HB = new TH1F( "TT_LLPhwQual_HB", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 15, -4, 11);
+  TH1F *CT_LLP_HB = new TH1F( "TT_LLP_HB", "TPs with hwQual set (HB);QIE Delay (ns); # Entries", 15, -4, 11);
   TH1F *CT_LLPhwQual_HE = new TH1F( "TT_LLPhwQual_HE", "TPs with hwQual set (HE);QIE Delay (ns); # Entries", 15, -4, 11);
   TH1F *CT_hwQual_HB = new TH1F( "TT_hwQual_HB", "TPs with hwQual set (HB);Tower hwQual; # Entries", 16, 0, 16);
   TH1F *CT_hwQual_HE = new TH1F( "TT_hwQual_HE", "TPs with hwQual set (HE);Tower hwQual; # Entries", 16, 0, 16);
@@ -524,7 +668,8 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	if (jetFG_ieta_fg123_emu.find(QIEdelay) == jetFG_ieta_fg123_emu.end()) jetFG_ieta_fg123_emu[QIEdelay] = new TH1F(Form("JetFG_IEta_fg123_emu_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
 	if (jetFG_ieta_other_emu.find(QIEdelay) == jetFG_ieta_other_emu.end()) jetFG_ieta_other_emu[QIEdelay] = new TH1F(Form("JetFG_IEta_other_emu_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
 	if (jetFG_ieta_allp_emu.find(QIEdelay) == jetFG_ieta_allp_emu.end()) jetFG_ieta_allp_emu[QIEdelay] = new TH1F(Form("JetFG_IEta_allp_emu_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
-
+	if (jetFG_ieta_allp4_emu.find(QIEdelay) == jetFG_ieta_allp4_emu.end()) jetFG_ieta_allp4_emu[QIEdelay] = new TH1F(Form("JetFG_IEta_allp4_emu_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
+	
       for (uint jetIt = 0; jetIt < nJetemu; jetIt++) {
 	if (l1emu_->jetEt[jetIt]>50.) jetET50->Fill(l1emu_->jetEt[jetIt]);
 	if (l1emu_->jetEt[jetIt]>64.) jetET64->Fill(l1emu_->jetEt[jetIt]);
@@ -550,7 +695,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     	    LLP_jet_ieta = jet_ieta[jetIt];
     	    LLP_jet_iphi = jet_iphi[jetIt];
     	    jetieta_LLP_emu[QIEdelay]->Fill(jet_ieta[jetIt]);
-    	    std::cout << "Event " << jentry << " EMU jet ieta, iphi flagged " << jet_ieta[jetIt] << " , " <<  jet_iphi[jetIt] << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
+    	    //std::cout << "Event " << jentry << " EMU jet ieta, iphi flagged " << jet_ieta[jetIt] << " , " <<  jet_iphi[jetIt] << " Energy "<< l1emu_->jetEt[jetIt] << std::endl;
     	    jetET_hwQual_emu[QIEdelay]->Fill(l1emu_->jetEt[jetIt]);
     	    llp_QIEdelay_emu->Fill(QIEdelay,1);
 
@@ -582,6 +727,20 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       l1HT->Fill(htSum);
       l1MHT->Fill(mhtSum);
       
+      
+      treeL1CTemu->GetEntry(jentry); // Calo tower
+      int nTower = l1CTemu_->nTower;
+      for (int towers = 0; towers < nTower; towers++) {
+        if ( abs(l1CTemu_->ieta[towers]<16 )) {
+        CT_LLP_HB_emu->Fill(QIEdelay,1);
+        if (abs(l1CTemu_->ieta[towers]) < 16) CT_hwQual_HB_emu->Fill(l1CTemu_->iqual[towers],1);
+        if (abs(l1CTemu_->ieta[towers]) >= 16 && abs(l1CTemu_->ieta[towers]) < 29) CT_hwQual_HE_emu->Fill(l1CTemu_->iqual[towers],1);
+        if ( (l1CTemu_->iqual[towers] & 0b0100) >> 2 == 1 ) { // if tower hwQual is set
+           CT_LLPhwQual_HB_emu->Fill(QIEdelay,1);
+          }
+         } 
+         } 
+      
       int TPenergy[32][72];
       int nHCALTP = l1TPemu_->nHCALTP;
       for (int tps = 0; tps < nHCALTP; tps++) {
@@ -612,23 +771,62 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
              corr_iphi = 72 - l1TPemu_->hcalTPiphi[tps] + 18;
              if (corr_iphi > 72) corr_iphi -= 72;
 
-             //if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
+             if (TPenergy[ieta][corr_iphi] > 4) { // require tower energy > 4 to make efficiency plots
 
+            llp_FG_QIEdelay_all4_emu->Fill(QIEdelay,1);
+            jetFG_ieta_allp4_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
+            if (abs(l1TPemu_->hcalTPieta[tps]) <= 8){
+               llp_FG_QIEdelay_all4_central_emu->Fill(QIEdelay,1);
+            }
+            } // end of requiring tower is over 4 gev
+            
             llp_FG_QIEdelay_all_emu->Fill(QIEdelay,1);
             jetFG_ieta_allp_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             if (abs(l1TPemu_->hcalTPieta[tps]) <= 8){
-               llp_FG_QIEdelay_all_central_emu->Fill(QIEdelay,1);
+            llp_FG_QIEdelay_all_central_emu->Fill(QIEdelay,1);
             }
-            //} // end of requiring tower is over 4 gev
+            
             if (fg1 || fg2 || fg3) {
             	jetFG_ieta_fg123_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	llp_FG_QIEdelay_fg123_emu->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -16) llp_FG_QIEdelay_fg123_emu_m16->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -15) llp_FG_QIEdelay_fg123_emu_m15->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -14) llp_FG_QIEdelay_fg123_emu_m14->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -13) llp_FG_QIEdelay_fg123_emu_m13->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -12) llp_FG_QIEdelay_fg123_emu_m12->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -11) llp_FG_QIEdelay_fg123_emu_m11->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -10) llp_FG_QIEdelay_fg123_emu_m10->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -9) llp_FG_QIEdelay_fg123_emu_m9->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -8) llp_FG_QIEdelay_fg123_emu_m8->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -7) llp_FG_QIEdelay_fg123_emu_m7->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -6) llp_FG_QIEdelay_fg123_emu_m6->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -5) llp_FG_QIEdelay_fg123_emu_m5->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -4) llp_FG_QIEdelay_fg123_emu_m4->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -3) llp_FG_QIEdelay_fg123_emu_m3->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -2) llp_FG_QIEdelay_fg123_emu_m2->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == -1) llp_FG_QIEdelay_fg123_emu_m1->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 1) llp_FG_QIEdelay_fg123_emu_1->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 2) llp_FG_QIEdelay_fg123_emu_2->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 3) llp_FG_QIEdelay_fg123_emu_3->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 4) llp_FG_QIEdelay_fg123_emu_4->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 5) llp_FG_QIEdelay_fg123_emu_5->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 6) llp_FG_QIEdelay_fg123_emu_6->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 7) llp_FG_QIEdelay_fg123_emu_7->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 8) llp_FG_QIEdelay_fg123_emu_8->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 9) llp_FG_QIEdelay_fg123_emu_9->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 10) llp_FG_QIEdelay_fg123_emu_10->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 11) llp_FG_QIEdelay_fg123_emu_11->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 12) llp_FG_QIEdelay_fg123_emu_12->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 13) llp_FG_QIEdelay_fg123_emu_13->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 14) llp_FG_QIEdelay_fg123_emu_14->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 15) llp_FG_QIEdelay_fg123_emu_15->Fill(QIEdelay,1);
+            	if (l1TPemu_->hcalTPieta[tps] == 16) llp_FG_QIEdelay_fg123_emu_16->Fill(QIEdelay,1);
             	}
             	if (fg0 || (!fg1 && (fg2 || fg3))) {
             	    jetFG_ieta_all_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123_emu->Fill(QIEdelay,1);
             		if (abs(l1TPemu_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi - LLP_jet_iphi) < 5) {
-            		std::cout << "Event " << jentry << ": and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << corr_iphi << " Energy " << TPenergy[ieta][corr_iphi] << std::endl;
+            		//std::cout << "Event " << jentry << ": and EMU flagged HCAL TP is close to a EMU jet, TP ieta, iphi " << l1TPemu_->hcalTPieta[tps] << ", " << corr_iphi << " Energy " << TPenergy[ieta][corr_iphi] << std::endl;
             		}
             	    if (fg0 == 1){
             	        jetFG_ieta_zero_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
@@ -640,6 +838,38 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
             	    if (!fg1 && (fg2 || fg3)) {
             	        jetFG_ieta_other_emu[QIEdelay]->Fill(l1TPemu_->hcalTPieta[tps]);
             	        llp_FG_QIEdelay_other_emu->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -16) llp_FG_QIEdelay_other_emu_m16->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -15) llp_FG_QIEdelay_other_emu_m15->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -14) llp_FG_QIEdelay_other_emu_m14->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -13) llp_FG_QIEdelay_other_emu_m13->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -12) llp_FG_QIEdelay_other_emu_m12->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -11) llp_FG_QIEdelay_other_emu_m11->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -10) llp_FG_QIEdelay_other_emu_m10->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -9) llp_FG_QIEdelay_other_emu_m9->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -8) llp_FG_QIEdelay_other_emu_m8->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -7) llp_FG_QIEdelay_other_emu_m7->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -6) llp_FG_QIEdelay_other_emu_m6->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -5) llp_FG_QIEdelay_other_emu_m5->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -4) llp_FG_QIEdelay_other_emu_m4->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -3) llp_FG_QIEdelay_other_emu_m3->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -2) llp_FG_QIEdelay_other_emu_m2->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == -1) llp_FG_QIEdelay_other_emu_m1->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 1) llp_FG_QIEdelay_other_emu_1->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 2) llp_FG_QIEdelay_other_emu_2->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 3) llp_FG_QIEdelay_other_emu_3->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 4) llp_FG_QIEdelay_other_emu_4->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 5) llp_FG_QIEdelay_other_emu_5->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 6) llp_FG_QIEdelay_other_emu_6->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 7) llp_FG_QIEdelay_other_emu_7->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 8) llp_FG_QIEdelay_other_emu_8->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 9) llp_FG_QIEdelay_other_emu_9->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 10) llp_FG_QIEdelay_other_emu_10->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 11) llp_FG_QIEdelay_other_emu_11->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 12) llp_FG_QIEdelay_other_emu_12->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 13) llp_FG_QIEdelay_other_emu_13->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 14) llp_FG_QIEdelay_other_emu_14->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 15) llp_FG_QIEdelay_other_emu_15->Fill(QIEdelay,1);
+            	        if (l1TPemu_->hcalTPieta[tps] == 16) llp_FG_QIEdelay_other_emu_16->Fill(QIEdelay,1);
             	        if (abs(l1TPemu_->hcalTPieta[tps]) <= 8){
             	            llp_FG_QIEdelay_other_central_emu->Fill(QIEdelay,1);
             	        }
@@ -673,6 +903,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
       if (jetFG_ieta_other.find(QIEdelay) == jetFG_ieta_other.end()) jetFG_ieta_other[QIEdelay] = new TH1F(Form("JetFG_IEta_other_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
       
       if (jetFG_ieta_allp.find(QIEdelay) == jetFG_ieta_allp.end()) jetFG_ieta_allp[QIEdelay] = new TH1F(Form("JetFG_IEta_allp_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
+      if (jetFG_ieta_allp4.find(QIEdelay) == jetFG_ieta_allp4.end()) jetFG_ieta_allp4[QIEdelay] = new TH1F(Form("JetFG_IEta_allp4_delay%d",QIEdelay),axD.c_str(),35, -17, 17);
       for (uint jetIt = 0; jetIt < nJet; jetIt++) {
 	jet_ieta[jetIt] = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
 	jet_iphi[jetIt] = (l1hw_->jetIPhi[jetIt]+1)/2;
@@ -692,7 +923,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	    LLP_jet_ieta = (abs(l1hw_->jetIEta[jetIt])+1)/2*(l1hw_->jetIEta[jetIt]/abs(l1hw_->jetIEta[jetIt]));
 	    LLP_jet_iphi = (l1hw_->jetIPhi[jetIt] + 1) / 2;
 	    jetieta_LLP[QIEdelay]->Fill(jet_ieta[jetIt]);
-	    std::cout << "Event " << jentry << " RAW jet ieta, iphi flagged  " << LLP_jet_ieta << " ,  " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
+	    //std::cout << "Event " << jentry << " RAW jet ieta, iphi flagged  " << LLP_jet_ieta << " ,  " << LLP_jet_iphi << " Energy " << l1hw_->jetEt[jetIt] << std::endl;
 	    jetET_hwQual[QIEdelay]->Fill(l1hw_->jetEt[jetIt]);
 	    llp_QIEdelay->Fill(QIEdelay,1);
 	    
@@ -703,6 +934,18 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
 	}    
 	}
       } // jet loop
+      
+      int nTower = l1CThw_->nTower;
+      for (int towers = 0; towers < nTower; towers++) {
+      if ( abs(l1CThw_->ieta[towers]) < 16 ) {
+         CT_LLP_HB->Fill(QIEdelay,1);
+         if (abs(l1CThw_->ieta[towers]) < 16) CT_hwQual_HB->Fill(l1CThw_->iqual[towers],1);
+         if (abs(l1CThw_->ieta[towers]) >= 16 && abs(l1CThw_->ieta[towers]) < 29) CT_hwQual_HE->Fill(l1CThw_->iqual[towers],1); // 0 if over 16
+         if ( (l1CThw_->iqual[towers] & 0b0100) >> 2 == 1) { // if tower hwQual is set
+             CT_LLPhwQual_HB->Fill(QIEdelay,1);
+             }
+        }
+        }
       
       int TPenergy[32][72];
       int nHCALTP = l1TPhw_->nHCALTP;
@@ -738,23 +981,62 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     		if (corr_iphi%4 == 1 || corr_iphi%4 == 2)  corr_iphi_fix -= 2;
     		if (corr_iphi%4 == 3 || corr_iphi%4 == 0)  corr_iphi_fix += 2;
     		
-    		//if (TPenergy[ieta][corr_iphi_fix] > 4) { // require tower energy > 4 to make efficiency plots
+    		if (TPenergy[ieta][corr_iphi_fix] > 4) { // require tower energy > 4 to make efficiency plots
     	    
-    		llp_FG_QIEdelay_all->Fill(QIEdelay,1);
-    		jetFG_ieta_allp[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+    		llp_FG_QIEdelay_all4->Fill(QIEdelay,1);
+    		jetFG_ieta_allp4[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
     		if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
-    		    llp_FG_QIEdelay_all_central->Fill(QIEdelay,1);
+    		    llp_FG_QIEdelay_all4_central->Fill(QIEdelay,1);
             	}
-            	//} // end of requiring tower is over 4 gev
+            	} // end of requiring tower is over 4 gev
+            	
+            	llp_FG_QIEdelay_all->Fill(QIEdelay,1);
+            	jetFG_ieta_allp[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
+            	if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
+            	    llp_FG_QIEdelay_all_central->Fill(QIEdelay,1);
+            	}
+            	
             	if (fg1 || fg2 || fg3) {
             	jetFG_ieta_fg123[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             	llp_FG_QIEdelay_fg123->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -16) llp_FG_QIEdelay_fg123_m16->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -15) llp_FG_QIEdelay_fg123_m15->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -14) llp_FG_QIEdelay_fg123_m14->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -13) llp_FG_QIEdelay_fg123_m13->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -12) llp_FG_QIEdelay_fg123_m12->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -11) llp_FG_QIEdelay_fg123_m11->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -10) llp_FG_QIEdelay_fg123_m10->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -9) llp_FG_QIEdelay_fg123_m9->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -8) llp_FG_QIEdelay_fg123_m8->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -7) llp_FG_QIEdelay_fg123_m7->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -6) llp_FG_QIEdelay_fg123_m6->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -5) llp_FG_QIEdelay_fg123_m5->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -4) llp_FG_QIEdelay_fg123_m4->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -3) llp_FG_QIEdelay_fg123_m3->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -2) llp_FG_QIEdelay_fg123_m2->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == -1) llp_FG_QIEdelay_fg123_m1->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 1) llp_FG_QIEdelay_fg123_1->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 2) llp_FG_QIEdelay_fg123_2->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 3) llp_FG_QIEdelay_fg123_3->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 4) llp_FG_QIEdelay_fg123_4->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 5) llp_FG_QIEdelay_fg123_5->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 6) llp_FG_QIEdelay_fg123_6->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 7) llp_FG_QIEdelay_fg123_7->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 8) llp_FG_QIEdelay_fg123_8->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 9) llp_FG_QIEdelay_fg123_9->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 10) llp_FG_QIEdelay_fg123_10->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 11) llp_FG_QIEdelay_fg123_11->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 12) llp_FG_QIEdelay_fg123_12->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 13) llp_FG_QIEdelay_fg123_13->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 14) llp_FG_QIEdelay_fg123_14->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 15) llp_FG_QIEdelay_fg123_15->Fill(QIEdelay,1);
+            	if (l1TPhw_->hcalTPieta[tps] == 16) llp_FG_QIEdelay_fg123_16->Fill(QIEdelay,1);
             	}
                 if (fg0 || (!fg1 && (fg2 || fg3))) {
             	    jetFG_ieta_all[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             	    llp_FG_QIEdelay_fg0123->Fill(QIEdelay,1);
             	    if (abs(l1TPhw_->hcalTPieta[tps] - LLP_jet_ieta) < 5 && abs(corr_iphi_fix - LLP_jet_iphi) < 5) {
-            	     std::cout << "Event " << jentry << ": and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << corr_iphi_fix << " Energy " << TPenergy[ieta][corr_iphi_fix] << std::endl;
+            	     //std::cout << "Event " << jentry << ": and RAW flagged HCAL TP is close to a RAW flagged L1 LLP jet which is at ieta, iphi " << l1TPhw_->hcalTPieta[tps] << ", " << corr_iphi_fix << " Energy " << TPenergy[ieta][corr_iphi_fix] << std::endl;
             	    }
                     if (fg0 == 1){
             		jetFG_ieta_zero[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
@@ -766,6 +1048,39 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
             	    if (!fg1 && (fg2 || fg3)) {
             		jetFG_ieta_other[QIEdelay]->Fill(l1TPhw_->hcalTPieta[tps]);
             		llp_FG_QIEdelay_other->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -16) llp_FG_QIEdelay_other_m16->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -15) llp_FG_QIEdelay_other_m15->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -14) llp_FG_QIEdelay_other_m14->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -13) llp_FG_QIEdelay_other_m13->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -12) llp_FG_QIEdelay_other_m12->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -11) llp_FG_QIEdelay_other_m11->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -10) llp_FG_QIEdelay_other_m10->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -9) llp_FG_QIEdelay_other_m9->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -8) llp_FG_QIEdelay_other_m8->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -7) llp_FG_QIEdelay_other_m7->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -6) llp_FG_QIEdelay_other_m6->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -5) llp_FG_QIEdelay_other_m5->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -4) llp_FG_QIEdelay_other_m4->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -3) llp_FG_QIEdelay_other_m3->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -2) llp_FG_QIEdelay_other_m2->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == -1) llp_FG_QIEdelay_other_m1->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 1) llp_FG_QIEdelay_other_1->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 2) llp_FG_QIEdelay_other_2->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 3) llp_FG_QIEdelay_other_3->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 4) llp_FG_QIEdelay_other_4->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 5) llp_FG_QIEdelay_other_5->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 6) llp_FG_QIEdelay_other_6->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 7) llp_FG_QIEdelay_other_7->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 8) llp_FG_QIEdelay_other_8->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 9) llp_FG_QIEdelay_other_9->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 10) llp_FG_QIEdelay_other_10->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 11) llp_FG_QIEdelay_other_11->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 12) llp_FG_QIEdelay_other_12->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 13) llp_FG_QIEdelay_other_13->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 14) llp_FG_QIEdelay_other_14->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 15) llp_FG_QIEdelay_other_15->Fill(QIEdelay,1);
+            		if (l1TPhw_->hcalTPieta[tps] == 16) llp_FG_QIEdelay_other_16->Fill(QIEdelay,1);
+            		
             	        if (abs(l1TPhw_->hcalTPieta[tps]) <= 8){
             		    llp_FG_QIEdelay_other_central->Fill(QIEdelay,1);
             		}
@@ -801,7 +1116,7 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     jetET50->Write(); jetET64->Write(); jetET76->Write(); jetET92->Write(); jetET112->Write(); jetET180->Write();
     llp_QIEdelay_emu->Write(); llp_QIEdelay_central_emu->Write();
     CT_hwQual_HB_emu->Write(); CT_hwQual_HE_emu->Write();
-    CT_LLPhwQual_HB_emu->Write(); CT_LLPhwQual_HE_emu->Write();
+    CT_LLPhwQual_HB_emu->Write(); CT_LLPhwQual_HE_emu->Write(); CT_LLP_HB_emu->Write();
     
     for (uint i=0; i<QIEdelay_order.size(); i++) jetET_hwQual_emu[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetET_hwQual_central_emu[std::get<0>(QIEdelay_order[i])]->Write();
@@ -814,12 +1129,47 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_other_emu[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_fg123_emu[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_allp_emu[std::get<0>(QIEdelay_order[i])]->Write();
+    for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_allp4_emu[std::get<0>(QIEdelay_order[i])]->Write();
 
     llp_all_emu->Write(); llp_all_central_emu->Write();
     llp_FG_QIEdelay_zero_central_emu->Write(); llp_FG_QIEdelay_zero_emu->Write();
     llp_FG_QIEdelay_other_central_emu->Write(); llp_FG_QIEdelay_other_emu->Write();
     llp_FG_QIEdelay_all_central_emu->Write(); llp_FG_QIEdelay_all_emu->Write();
+    llp_FG_QIEdelay_all4_central_emu->Write(); llp_FG_QIEdelay_all4_emu->Write();
     llp_FG_QIEdelay_fg123_emu->Write(); llp_FG_QIEdelay_fg0123_emu->Write();
+    llp_FG_QIEdelay_other_emu_m16->Write(); llp_FG_QIEdelay_other_emu_m15->Write();
+    llp_FG_QIEdelay_other_emu_m14->Write(); llp_FG_QIEdelay_other_emu_m13->Write();
+    llp_FG_QIEdelay_other_emu_m12->Write(); llp_FG_QIEdelay_other_emu_m11->Write();
+    llp_FG_QIEdelay_other_emu_m10->Write(); llp_FG_QIEdelay_other_emu_m9->Write();
+    llp_FG_QIEdelay_other_emu_m8->Write(); llp_FG_QIEdelay_other_emu_m7->Write();
+    llp_FG_QIEdelay_other_emu_m6->Write(); llp_FG_QIEdelay_other_emu_m5->Write();
+    llp_FG_QIEdelay_other_emu_m4->Write(); llp_FG_QIEdelay_other_emu_m3->Write();
+    llp_FG_QIEdelay_other_emu_m2->Write(); llp_FG_QIEdelay_other_emu_m1->Write();
+    llp_FG_QIEdelay_other_emu_1->Write(); llp_FG_QIEdelay_other_emu_2->Write();
+    llp_FG_QIEdelay_other_emu_3->Write(); llp_FG_QIEdelay_other_emu_4->Write();
+    llp_FG_QIEdelay_other_emu_5->Write(); llp_FG_QIEdelay_other_emu_6->Write();
+    llp_FG_QIEdelay_other_emu_7->Write(); llp_FG_QIEdelay_other_emu_8->Write();
+    llp_FG_QIEdelay_other_emu_9->Write(); llp_FG_QIEdelay_other_emu_10->Write();
+    llp_FG_QIEdelay_other_emu_11->Write(); llp_FG_QIEdelay_other_emu_12->Write();
+    llp_FG_QIEdelay_other_emu_13->Write(); llp_FG_QIEdelay_other_emu_14->Write();
+    llp_FG_QIEdelay_other_emu_15->Write(); llp_FG_QIEdelay_other_emu_16->Write();
+    
+    llp_FG_QIEdelay_fg123_emu_m16->Write(); llp_FG_QIEdelay_fg123_emu_m15->Write();
+    llp_FG_QIEdelay_fg123_emu_m14->Write(); llp_FG_QIEdelay_fg123_emu_m13->Write();
+    llp_FG_QIEdelay_fg123_emu_m12->Write(); llp_FG_QIEdelay_fg123_emu_m11->Write();
+    llp_FG_QIEdelay_fg123_emu_m10->Write(); llp_FG_QIEdelay_fg123_emu_m9->Write();
+    llp_FG_QIEdelay_fg123_emu_m8->Write(); llp_FG_QIEdelay_fg123_emu_m7->Write();
+    llp_FG_QIEdelay_fg123_emu_m6->Write(); llp_FG_QIEdelay_fg123_emu_m5->Write();
+    llp_FG_QIEdelay_fg123_emu_m4->Write(); llp_FG_QIEdelay_fg123_emu_m3->Write();
+    llp_FG_QIEdelay_fg123_emu_m2->Write(); llp_FG_QIEdelay_fg123_emu_m1->Write();
+    llp_FG_QIEdelay_fg123_emu_1->Write(); llp_FG_QIEdelay_fg123_emu_2->Write();
+    llp_FG_QIEdelay_fg123_emu_3->Write(); llp_FG_QIEdelay_fg123_emu_4->Write();
+    llp_FG_QIEdelay_fg123_emu_5->Write(); llp_FG_QIEdelay_fg123_emu_6->Write();
+    llp_FG_QIEdelay_fg123_emu_7->Write(); llp_FG_QIEdelay_fg123_emu_8->Write();
+    llp_FG_QIEdelay_fg123_emu_9->Write(); llp_FG_QIEdelay_fg123_emu_10->Write();
+    llp_FG_QIEdelay_fg123_emu_11->Write(); llp_FG_QIEdelay_fg123_emu_12->Write();
+    llp_FG_QIEdelay_fg123_emu_13->Write(); llp_FG_QIEdelay_fg123_emu_14->Write();
+    llp_FG_QIEdelay_fg123_emu_15->Write(); llp_FG_QIEdelay_fg123_emu_16->Write();
   }
   if (hwOn) {  //commenting out plots because just testing one QIE delay input now
     for (uint i=0; i<QIEdelay_order.size(); i++) jetET_hwQual[std::get<0>(QIEdelay_order[i])]->Write();
@@ -833,16 +1183,53 @@ void jetanalysis(bool newConditions, const std::string& inputFileDirectory){
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_other[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_fg123[std::get<0>(QIEdelay_order[i])]->Write();
     for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_allp[std::get<0>(QIEdelay_order[i])]->Write();
+    for (uint i=0; i<QIEdelay_order.size(); i++) jetFG_ieta_allp4[std::get<0>(QIEdelay_order[i])]->Write();
 
     llp_QIEdelay->Write(); llp_QIEdelay_central->Write();
     llp_all->Write(); llp_all_central->Write();
     CT_hwQual_HB->Write(); CT_hwQual_HE->Write();
-    CT_LLPhwQual_HB->Write(); CT_LLPhwQual_HE->Write();
+    CT_LLPhwQual_HB->Write(); CT_LLPhwQual_HE->Write(); CT_LLP_HB->Write();
     TP_FG_HB->Write(); TP_FG_HE->Write();
     llp_FG_QIEdelay_zero_central->Write(); llp_FG_QIEdelay_zero->Write();
     llp_FG_QIEdelay_other_central->Write(); llp_FG_QIEdelay_other->Write();
     llp_FG_QIEdelay_all_central->Write(); llp_FG_QIEdelay_all->Write();
+    llp_FG_QIEdelay_all4_central->Write(); llp_FG_QIEdelay_all4->Write();
     llp_FG_QIEdelay_fg123->Write(); llp_FG_QIEdelay_fg0123->Write();
+    llp_FG_QIEdelay_other_m16->Write(); llp_FG_QIEdelay_other_m15->Write();
+    llp_FG_QIEdelay_other_16->Write(); llp_FG_QIEdelay_other_m14->Write();
+    llp_FG_QIEdelay_other_m13->Write(); llp_FG_QIEdelay_other_m12->Write();
+    llp_FG_QIEdelay_other_m11->Write(); llp_FG_QIEdelay_other_m10->Write();
+    llp_FG_QIEdelay_other_m9->Write(); llp_FG_QIEdelay_other_m8->Write();
+    llp_FG_QIEdelay_other_m7->Write(); llp_FG_QIEdelay_other_m6->Write();
+    llp_FG_QIEdelay_other_m5->Write(); llp_FG_QIEdelay_other_m4->Write();
+    llp_FG_QIEdelay_other_m3->Write(); llp_FG_QIEdelay_other_m2->Write();
+    llp_FG_QIEdelay_other_m1->Write(); llp_FG_QIEdelay_other_1->Write();
+    llp_FG_QIEdelay_other_2->Write(); llp_FG_QIEdelay_other_3->Write();
+    llp_FG_QIEdelay_other_4->Write(); llp_FG_QIEdelay_other_5->Write();
+    llp_FG_QIEdelay_other_6->Write(); llp_FG_QIEdelay_other_7->Write();
+    llp_FG_QIEdelay_other_8->Write(); llp_FG_QIEdelay_other_9->Write();
+    llp_FG_QIEdelay_other_10->Write(); llp_FG_QIEdelay_other_11->Write();
+    llp_FG_QIEdelay_other_12->Write(); llp_FG_QIEdelay_other_13->Write();
+    llp_FG_QIEdelay_other_14->Write(); llp_FG_QIEdelay_other_15->Write();
+    
+    llp_FG_QIEdelay_fg123_m16->Write(); llp_FG_QIEdelay_fg123_m15->Write();
+    llp_FG_QIEdelay_fg123_m14->Write(); llp_FG_QIEdelay_fg123_m13->Write();
+    llp_FG_QIEdelay_fg123_m12->Write(); llp_FG_QIEdelay_fg123_m11->Write();
+    llp_FG_QIEdelay_fg123_m10->Write(); llp_FG_QIEdelay_fg123_m9->Write();
+    llp_FG_QIEdelay_fg123_m8->Write(); llp_FG_QIEdelay_fg123_m7->Write();
+    llp_FG_QIEdelay_fg123_m6->Write(); llp_FG_QIEdelay_fg123_m5->Write();
+    llp_FG_QIEdelay_fg123_m4->Write(); llp_FG_QIEdelay_fg123_m3->Write();
+    llp_FG_QIEdelay_fg123_m2->Write(); llp_FG_QIEdelay_fg123_m1->Write();
+    llp_FG_QIEdelay_fg123_1->Write(); llp_FG_QIEdelay_fg123_2->Write();
+    llp_FG_QIEdelay_fg123_3->Write(); llp_FG_QIEdelay_fg123_4->Write();
+    llp_FG_QIEdelay_fg123_5->Write(); llp_FG_QIEdelay_fg123_6->Write();
+    llp_FG_QIEdelay_fg123_7->Write(); llp_FG_QIEdelay_fg123_8->Write();
+    llp_FG_QIEdelay_fg123_9->Write(); llp_FG_QIEdelay_fg123_10->Write();
+    llp_FG_QIEdelay_fg123_11->Write(); llp_FG_QIEdelay_fg123_12->Write();
+    llp_FG_QIEdelay_fg123_13->Write(); llp_FG_QIEdelay_fg123_14->Write();
+    llp_FG_QIEdelay_fg123_15->Write(); llp_FG_QIEdelay_fg123_16->Write();
+    
+    
     
     
     if (TEfficiency::CheckConsistency(*llp_QIEdelay, *llp_all)) {

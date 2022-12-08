@@ -33,6 +33,16 @@
 using namespace std;
 
 void JetEffs() {
+
+  TLatex *latex = new TLatex(); 
+  latex->SetNDC();
+  latex->SetTextFont(42);
+  latex->SetTextColor(kBlack);
+  
+   TString cmsLabel = "#scale[0.6]{#bf{CMS}} #scale[0.4]{#it{2022 13.6 TeV Collisions 362085,87}}";
+   float commentaryXpos = 0.6;
+   float depthXpos = 0.2;
+
   TCanvas *c1 =new TCanvas("c1", " ", 0, 0,1000,1000);
   c1->Range(0,0,1,1);
   c1->SetFillColor(0);
@@ -96,6 +106,7 @@ void JetEffs() {
     legend1->Draw("same");
 
     char saveFile[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
   } // delay loop
@@ -119,59 +130,12 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
     h9->GetYaxis()->SetRangeUser(0.,0.03);
-    h9->GetXaxis()->SetRangeUser(0 ,17);
-    h9->Draw();
-
-    c1->Update();
-    c1->RedrawAxis();
-
-    TEfficiency* pEff6 = 0;
-
-    if(TEfficiency::CheckConsistency(*h11,*h9))
-      {
-        pEff6 = new TEfficiency(*h11,*h9);
-        pEff6->SetLineWidth(3.);
-        pEff6->SetLineColor(kBlue);
-        pEff6->Draw("same");
-      }
-    TLegend *legend3 = new TLegend(0.15, 0.7, 0.6, 0.8);
-    legend3->SetTextFont(42);
-    legend3->SetLineColor(0);
-    legend3->SetTextSize(0.04);
-    legend3->SetFillColor(0);
-    legend3->AddEntry(pEff6, "Delayed L1 jet vs i#eta", "l");
-
-    legend3->Draw("same");
-
-    char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(0-17)%d_effs.pdf",delay));
-    c1->SaveAs(saveFile);
-    }
-    
- // pert of code for ieta 1-16
-   for (int delay = -4; delay <= 10; delay += 2) {
-    //if (delay == 0) continue;
-    std::cout << delay << std::endl;
-
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
-    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
-
-    h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (RAW)",delay));
-    h9->GetXaxis()->SetTitle("Jet i#eta");
-    h9->GetXaxis()->SetTitleSize(0.045);
-    h9->GetXaxis()->SetTitleOffset(1.1);
-    h9->GetYaxis()->SetTitle("Jet Efficiency");
-    h9->GetYaxis()->SetTitleSize(0.045);
-    h9->GetYaxis()->SetTitleOffset(1.15);
-    //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.03);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
     c1->Update();
     c1->RedrawAxis();
-    
+
     TEfficiency* pEff6 = 0;
 
     if(TEfficiency::CheckConsistency(*h11,*h9))
@@ -191,57 +155,11 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(-17 - 17)%d_effs.pdf",delay));
-    c1->SaveAs(saveFile);
-  } // delay loop 
-
-
-// pert of code for ieta -16 - 0
- for (int delay = -4; delay <= 10; delay += 2) {
-    //if (delay == 0) continue;
-    std::cout << delay << std::endl;
-
-    TH1F *h9 = (TH1F*)f1->Get(Form("JetIEta_all_delay%d",delay));
-    TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_delay%d",delay));
-
-    h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (RAW)",delay));
-    h9->GetXaxis()->SetTitle("Jet i#eta");
-    h9->GetXaxis()->SetTitleSize(0.045);
-    h9->GetXaxis()->SetTitleOffset(1.1);
-    h9->GetYaxis()->SetTitle("Jet Efficiency");
-    h9->GetYaxis()->SetTitleSize(0.045);
-    h9->GetYaxis()->SetTitleOffset(1.15);
-    //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.03);
-    h9->GetXaxis()->SetRangeUser(-17 ,0);
-    h9->Draw();
-
-    c1->Update();
-    c1->RedrawAxis();
-
-    TEfficiency* pEff7 = 0;
-
-    if(TEfficiency::CheckConsistency(*h11,*h9))
-      {
-        pEff7 = new TEfficiency(*h11,*h9);
-        pEff7->SetLineWidth(3.);
-        pEff7->SetLineColor(kBlue);
-        pEff7->Draw("same");
-      }
-    TLegend *legend4 = new TLegend(0.15, 0.7, 0.6, 0.8);
-    legend4->SetTextFont(42);
-    legend4->SetLineColor(0);
-    legend4->SetTextSize(0.04);
-    legend4->SetFillColor(0);
-    legend4->AddEntry(pEff7, "Delayed L1 jet vs i#eta", "l");
-
-    legend4->Draw("same");
-
-    char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(-17-0)%d_effs.pdf",delay));
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_LLPieta(-17-17)%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
+    
     
     // for depth
 
@@ -283,10 +201,10 @@ void JetEffs() {
         pEff7->SetLineColor(kRed);
         pEff7->Draw("same");
              }
-    TLegend *legend3 = new TLegend(0.15, 0.7, 0.6, 0.8);
+    TLegend *legend3 = new TLegend(0.15, 0.8, 0.6, 0.9);
     legend3->SetTextFont(42);
     legend3->SetLineColor(0);
-    legend3->SetTextSize(0.04);
+    legend3->SetTextSize(0.02);
     legend3->SetFillColor(0);
     legend3->AddEntry(pEff6, "Depth flagged, fg0 = 1", "l");
     legend3->AddEntry(pEff7, "Time flagged, !fg1 && (fg2 || fg3) = 1", "l");
@@ -294,6 +212,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_FG_ieta%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
@@ -316,7 +235,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitle("Tower Efficiency");
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
-    h9->GetYaxis()->SetRangeUser(0.,0.2);
+    h9->GetYaxis()->SetRangeUser(0.,0.02);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -348,6 +267,7 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta%d_effs.pdf",delay));
     c1->SaveAs(saveFile);
     }
@@ -385,6 +305,58 @@ void JetEffs() {
         pEff6->SetLineColor(kBlue);
         pEff6->Draw("same");
              }
+    TLegend *legend3 = new TLegend(0.15, 0.8, 0.6, 0.9);
+    legend3->SetTextFont(42);
+    legend3->SetLineColor(0);
+    legend3->SetTextSize(0.03);
+    legend3->SetFillColor(0);
+    legend3->AddEntry(pEff6, "Time flagged,    #frac{!fg1 && (fg2 || fg3)}{fg1 || fg2 || fg3}", "l");
+
+    legend3->Draw("same");
+
+    char saveFile[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_%d_effs.pdf",delay));
+    c1->SaveAs(saveFile);
+    }
+
+  TH1F *h5 = (TH1F*)f1->Get("LLPqieDelay_all");
+  TH1F *h6 = (TH1F*)f1->Get("LLPqieDelay");
+  TH1F *h7 = (TH1F*)f1->Get("LLPqieDelay_central_all");
+  TH1F *h8 = (TH1F*)f1->Get("LLPqieDelay_central");
+  
+
+  // eff with (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3) for ieta
+
+for (int ieta = -16; ieta <=16; ieta++){
+    if (ieta == 0) continue;
+    TH1F *h40 = (TH1F*)f1->Get(Form("LLPqieDelay_FG_fg123_%d",ieta));
+    TH1F *h41 = (TH1F*)f1->Get(Form("LLPqieDelay_FG_other_%d",ieta));
+
+    h40->SetLineColorAlpha(kWhite, 1.);
+    h40->SetTitle(Form("Tower Efficiency vs QIE delay for TP i #eta %d (RAW)",ieta));
+    h40->GetXaxis()->SetTitle("QIE delay");
+    h40->GetXaxis()->SetTitleSize(0.045);
+    h40->GetXaxis()->SetTitleOffset(1.1);
+    h40->GetYaxis()->SetTitle("Tower Efficiency");
+    h40->GetYaxis()->SetTitleSize(0.045);
+    h40->GetYaxis()->SetTitleOffset(1.15);
+    h40->GetYaxis()->SetRangeUser(0.,1.0);
+    h40->GetXaxis()->SetRangeUser(-6 ,12);
+    h40->Draw();
+
+    c1->Update();
+    c1->RedrawAxis();
+
+    TEfficiency* pEff6 = 0;
+
+    if(TEfficiency::CheckConsistency(*h41,*h40))
+      {
+      pEff6 = new TEfficiency(*h41,*h40);
+      pEff6->SetLineWidth(3.);
+      pEff6->SetLineColor(kBlue);
+      pEff6->Draw("same");
+      }
     TLegend *legend3 = new TLegend(0.15, 0.7, 0.6, 0.8);
     legend3->SetTextFont(42);
     legend3->SetLineColor(0);
@@ -395,15 +367,10 @@ void JetEffs() {
     legend3->Draw("same");
 
     char saveFile[100];
-    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_%d_effs.pdf",delay));
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile, Form("/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_effs_for_ieta_%d.pdf",ieta));
     c1->SaveAs(saveFile);
-    }
-
-  TH1F *h5 = (TH1F*)f1->Get("LLPqieDelay_all");
-  TH1F *h6 = (TH1F*)f1->Get("LLPqieDelay");
-  TH1F *h7 = (TH1F*)f1->Get("LLPqieDelay_central_all");
-  TH1F *h8 = (TH1F*)f1->Get("LLPqieDelay_central");
-  
+}  
   
   // LLP jet vs QIE delay
   
@@ -449,6 +416,7 @@ void JetEffs() {
   legend2->Draw("same");
 
   char saveFile1[100];
+  latex->DrawLatex(0.5, 0.9, cmsLabel);
   sprintf(saveFile1,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Jet_effs.pdf");
   c1->SaveAs(saveFile1);
   
@@ -465,6 +433,57 @@ void JetEffs() {
   TH1F *h26 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123");
   TH1F *h27 = (TH1F*)f1->Get("LLPqieDelay_FG_fg0123");
   
+  TH1F *h44 = (TH1F*)f1->Get("LLPqieDelay_FG_all4");
+  TH1F *h45 = (TH1F*)f1->Get("LLPqieDelay_FG_all4_central");
+  
+  // logic fg0 = 1 and ieta <= 8 for all E > 4GeV
+  
+    h21->SetLineColorAlpha(kWhite, 1.);
+    h21->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (RAW)"));
+    h21->GetXaxis()->SetTitle("QIE Delay [ns]");
+    h21->GetXaxis()->SetTitleSize(0.045);
+    h21->GetXaxis()->SetTitleOffset(1.1);
+    h21->GetYaxis()->SetTitle("Tower Efficiency");
+    h21->GetYaxis()->SetTitleSize(0.045);
+    h21->GetYaxis()->SetTitleOffset(1.15);
+    h21->GetYaxis()->SetRangeUser(0.,0.02);
+    h21->GetXaxis()->SetRangeUser(-5.,12);
+    h21->Draw();
+                      
+    c1->Update();
+    c1->RedrawAxis();
+                          
+    TEfficiency* pEff21 = 0;
+    TEfficiency* pEff22 = 0;
+    
+    if(TEfficiency::CheckConsistency(*h21,*h44) && TEfficiency::CheckConsistency(*h20,*h45))
+        {
+            std::cout << "about to do vs QIE plots" << std::endl;
+            pEff21 = new TEfficiency(*h21,*h44);
+            pEff21->SetLineWidth(3.);
+            pEff21->SetLineColor(kRed);
+            pEff21->Draw("same");
+            pEff22 = new TEfficiency(*h20,*h45);
+            pEff22->SetLineWidth(3.);
+            pEff22->SetLineColor(kBlack);
+            pEff22->Draw("same");
+        }
+        
+    TLegend *legend8 = new TLegend(0.15, 0.7, 0.6, 0.8);
+    legend8->SetTextFont(42);
+    legend8->SetLineColor(0);
+    legend8->SetTextSize(0.03);
+    legend8->SetFillColor(0);
+    legend8->AddEntry(pEff21, "Depth Flagged L1 Tower fg0 = 1", "l");
+    legend8->AddEntry(pEff22, "Depth Flagged L1 Tower fg0 = 1, and tower i#eta#leq8", "l");
+                
+                  
+    legend8->Draw("same");
+                  
+    char saveFile6[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile6,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_zero_4GeV.pdf");
+    c1->SaveAs(saveFile6);
   
   // logic fg0 = 1 and ieta <= 8 for all
   
@@ -476,7 +495,7 @@ void JetEffs() {
     h20->GetYaxis()->SetTitle("Tower Efficiency");
     h20->GetYaxis()->SetTitleSize(0.045);
     h20->GetYaxis()->SetTitleOffset(1.15);
-    h20->GetYaxis()->SetRangeUser(0.,0.02);
+    h20->GetYaxis()->SetRangeUser(0.,0.002);
     h20->GetXaxis()->SetRangeUser(-5.,12);
     h20->Draw();
                       
@@ -511,8 +530,60 @@ void JetEffs() {
     legend3->Draw("same");
                   
     char saveFile[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_zero.pdf");
     c1->SaveAs(saveFile);
+    
+    
+    
+   // logic !fg1 && (fg2 || fg3) and ieta <= 8 for all E > 4GeV
+
+    h45->SetLineColorAlpha(kWhite, 1.);
+    h45->SetTitle(Form("Delayed Tower Efficiency vs QIE delay, E > 4GeV (RAW)"));
+    h45->GetXaxis()->SetTitle("QIE Delay [ns]");
+    h45->GetXaxis()->SetTitleSize(0.045);
+    h45->GetXaxis()->SetTitleOffset(1.1);
+    h45->GetYaxis()->SetTitle("Tower Efficiency");
+    h45->GetYaxis()->SetTitleSize(0.045);
+    h45->GetYaxis()->SetTitleOffset(1.15);
+    h45->GetYaxis()->SetRangeUser(0.,0.2);
+    h45->GetXaxis()->SetRangeUser(-5.,12);
+    h45->Draw();
+
+    c1->Update();
+    c1->RedrawAxis();
+
+    TEfficiency* pEff26 = 0;
+    TEfficiency* pEff27 = 0;
+
+    if(TEfficiency::CheckConsistency(*h23,*h44) && TEfficiency::CheckConsistency(*h22,*h45))
+        {
+            std::cout << "about to do vs QIE plots" << std::endl;
+            pEff26 = new TEfficiency(*h23,*h44);
+            pEff26->SetLineWidth(3.);
+            pEff26->SetLineColor(kRed);
+            pEff26->Draw("same");
+            pEff27 = new TEfficiency(*h22,*h45);
+            pEff27->SetLineWidth(3.);
+            pEff27->SetLineColor(kBlack);
+            pEff27->Draw("same");
+        }
+
+    TLegend *legend10 = new TLegend(0.15, 0.7, 0.6, 0.8);
+    legend10->SetTextFont(42);
+    legend10->SetLineColor(0);
+    legend10->SetTextSize(0.03);
+    legend10->SetFillColor(0);
+    legend10->AddEntry(pEff26, "Time Flagged L1 Tower !fg1 && (fg2 || fg3) ", "l");
+    legend10->AddEntry(pEff27, "Time Flagged L1 Tower !fg1 && (fg2 || fg3), and tower i#eta#leq8", "l");
+
+
+    legend10->Draw("same");
+
+    char saveFile8[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile8,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_E4GeV.pdf");
+    c1->SaveAs(saveFile8);
     
     
     
@@ -526,7 +597,7 @@ void JetEffs() {
     h22->GetYaxis()->SetTitle("Tower Efficiency");
     h22->GetYaxis()->SetTitleSize(0.045);
     h22->GetYaxis()->SetTitleOffset(1.15);
-    h22->GetYaxis()->SetRangeUser(0.,0.22);
+    h22->GetYaxis()->SetRangeUser(0.,0.02);
     h22->GetXaxis()->SetRangeUser(-5.,12);
     h22->Draw();
 
@@ -554,13 +625,14 @@ void JetEffs() {
     legend4->SetLineColor(0);
     legend4->SetTextSize(0.03);
     legend4->SetFillColor(0);
-    legend4->AddEntry(pEff6, "Time Flagged L1 Tower !fg1 && (fg2 || fg3) ", "l");
-    legend4->AddEntry(pEff7, "Time Flagged L1 Tower !fg1 && (fg2 || fg3), and tower i#eta#leq8", "l");    
+    legend4->AddEntry(pEff8, "Time Flagged L1 Tower !fg1 && (fg2 || fg3) ", "l");
+    legend4->AddEntry(pEff9, "Time Flagged L1 Tower !fg1 && (fg2 || fg3), and tower i#eta#leq8", "l");    
     
 
     legend4->Draw("same");
 
     char saveFile2[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile2,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other.pdf");
     c1->SaveAs(saveFile2);
     
@@ -604,6 +676,7 @@ void JetEffs() {
     legend5->Draw("same");
 
     char saveFile3[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile3,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_and_fg123.pdf");
     c1->SaveAs(saveFile3);
 
@@ -652,6 +725,7 @@ void JetEffs() {
     legend6->Draw("same");
 
     char saveFile4[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile4,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Tower_effs_other_zero_fg0123.pdf");
     c1->SaveAs(saveFile4);
     
@@ -683,7 +757,7 @@ void JetEffs() {
     h28->GetYaxis()->SetTitle("Jet Efficiency");
     h28->GetYaxis()->SetTitleSize(0.045);
     h28->GetYaxis()->SetTitleOffset(1.15);
-    h28->GetYaxis()->SetRangeUser(0.,0.08);
+    h28->GetYaxis()->SetRangeUser(0.,0.06);
     h28->GetXaxis()->SetRangeUser(0,400);
     h28->Draw();
     
@@ -743,7 +817,7 @@ void JetEffs() {
                 pEff20->Draw("same");
                 
             }
-    TLegend *legend7 = new TLegend(0.15, 0.7, 0.6, 0.8);
+    TLegend *legend7 = new TLegend(0.15, 0.7, 0.6, 0.9);
     legend7->SetTextFont(42);
     legend7->SetLineColor(0);
     legend7->SetTextSize(0.02);
@@ -762,8 +836,235 @@ void JetEffs() {
     legend7->Draw("same");
     
     char saveFile5[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
     sprintf(saveFile5,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Jet_Et_all_delay.pdf");
     c1->SaveAs(saveFile5);
 
+    
+   // calo tower
+   
+   TH1F *h46 = (TH1F*)f1->Get("TT_LLPhwQual_HB");
+   TH1F *h47 = (TH1F*)f1->Get("TT_LLP_HB");
 
+    h46->SetLineColorAlpha(kWhite, 1.);
+    h46->SetTitle(Form("Calo Tower Efficiency vs QIE delay (RAW)"));
+    h46->GetXaxis()->SetTitle("QIE Delay [ns]");
+    h46->GetXaxis()->SetTitleSize(0.045);
+    h46->GetXaxis()->SetTitleOffset(1.1);
+    h46->GetYaxis()->SetTitle("Tower Efficiency");
+    h46->GetYaxis()->SetTitleSize(0.045);
+    h46->GetYaxis()->SetTitleOffset(1.15);
+    h46->GetYaxis()->SetRangeUser(0.,0.002);
+    h46->GetXaxis()->SetRangeUser(-5.,12.);
+    h46->Draw();
+
+    c1->Update();
+    c1->RedrawAxis();
+
+    TEfficiency* pEff25 = 0;
+
+    if(TEfficiency::CheckConsistency(*h46,*h47) && TEfficiency::CheckConsistency(*h46,*h47))
+        {
+            std::cout << "about to do vs QIE plots" << std::endl;
+            pEff25 = new TEfficiency(*h46,*h47);
+            pEff25->SetLineWidth(3.);
+            pEff25->SetLineColor(kBlack);
+            pEff25->Draw("same");
+        }
+
+    TLegend *legend9 = new TLegend(0.15, 0.65, 0.6, 0.85);
+    legend9->SetTextFont(42);
+    legend9->SetLineColor(0);
+    legend9->SetTextSize(0.02);
+    legend9->SetFillColor(0);
+    legend9->AddEntry(pEff25, "CaloTower_eff ", "l");
+
+
+    legend9->Draw("same");
+
+    char saveFile7[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile7,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/Calo_Tower_effs.pdf");
+    c1->SaveAs(saveFile7);
+    
+
+
+    // tower eff all delay (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
+
+    TH1F *h50 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay-4");
+    TH1F *h51 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay-2");
+    TH1F *h52 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay0");
+    TH1F *h53 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay2");
+    TH1F *h54 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay4");
+    TH1F *h55 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay6");
+    TH1F *h56 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay8");
+    TH1F *h57 = (TH1F*)f1->Get("JetFG_IEta_fg123_delay10");
+    
+    
+    
+    TH1F *h60 = (TH1F*)f1->Get("JetFG_IEta_other_delay-4");
+    TH1F *h61 = (TH1F*)f1->Get("JetFG_IEta_other_delay-2");
+    TH1F *h62 = (TH1F*)f1->Get("JetFG_IEta_other_delay0");
+    TH1F *h63 = (TH1F*)f1->Get("JetFG_IEta_other_delay2");
+    TH1F *h64 = (TH1F*)f1->Get("JetFG_IEta_other_delay4");
+    TH1F *h65 = (TH1F*)f1->Get("JetFG_IEta_other_delay6");
+    TH1F *h66 = (TH1F*)f1->Get("JetFG_IEta_other_delay8");
+    TH1F *h67 = (TH1F*)f1->Get("JetFG_IEta_other_delay10");
+    
+
+    h30->SetLineColorAlpha(kWhite, 1.);
+    h30->SetTitle(Form("Tower Efficiency vs TP i#eta for all QIE delay (RAW)"));
+    h30->GetXaxis()->SetTitle("TP i#eta");
+    h30->GetXaxis()->SetTitleSize(0.045);
+    h30->GetXaxis()->SetTitleOffset(1.1);
+    h30->GetYaxis()->SetTitle("Tower Efficiency");
+    h30->GetYaxis()->SetTitleSize(0.045);
+    h30->GetYaxis()->SetTitleOffset(1.15);
+    h30->GetYaxis()->SetRangeUser(0.,1.3);
+    h30->GetXaxis()->SetRangeUser(-17. ,17.);
+    h30->Draw();
+
+    c1->Update();
+    c1->RedrawAxis();
+
+    TEfficiency* pEff30 = 0;
+    TEfficiency* pEff31 = 0;
+    TEfficiency* pEff32 = 0;
+    TEfficiency* pEff33 = 0;
+    TEfficiency* pEff34 = 0;
+    TEfficiency* pEff35 = 0;
+    TEfficiency* pEff36 = 0;
+    TEfficiency* pEff37 = 0;
+    
+
+    if(TEfficiency::CheckConsistency(*h60,*h50) && TEfficiency::CheckConsistency(*h61,*h51) && TEfficiency::CheckConsistency(*h62,*h52) && TEfficiency::CheckConsistency(*h63,*h53) && TEfficiency::CheckConsistency(*h64,*h54) && TEfficiency::CheckConsistency(*h65,*h55) && TEfficiency::CheckConsistency(*h66,*h56) && TEfficiency::CheckConsistency(*h67,*h57))
+      { 
+             std::cout << "about to do vs Et plots" << std::endl;
+                pEff30 = new TEfficiency(*h60,*h50);
+                pEff30->SetLineWidth(3.);
+                pEff30->SetLineColor(kRed);
+                pEff30->Draw("same");
+
+                pEff31 = new TEfficiency(*h61,*h51);
+                pEff31->SetLineWidth(3.);
+                pEff31->SetLineColor(kOrange-3);
+                pEff31->Draw("same");
+
+                pEff32 = new TEfficiency(*h62,*h52);
+                pEff32->SetLineWidth(3.);
+                pEff32->SetLineColor(kYellow-3);
+                pEff32->Draw("same");
+
+                pEff33 = new TEfficiency(*h63,*h53);
+                pEff33->SetLineWidth(3.);
+                pEff33->SetLineColor(kGreen);
+                pEff33->Draw("same");
+
+                pEff34 = new TEfficiency(*h64,*h54);
+                pEff34->SetLineWidth(3.);
+                pEff34->SetLineColor(kBlue);
+                pEff34->Draw("same");
+
+                pEff35 = new TEfficiency(*h65,*h55);
+                pEff35->SetLineWidth(3.);
+                pEff35->SetLineColor(kAzure+6);
+                pEff35->Draw("same");
+
+                pEff36 = new TEfficiency(*h66,*h56);
+                pEff36->SetLineWidth(3.);
+                pEff36->SetLineColor(kBlack);
+                pEff36->Draw("same");
+
+                pEff37 = new TEfficiency(*h67,*h57);
+                pEff37->SetLineWidth(3.);
+                pEff37->SetLineColor(kGray);
+                pEff37->Draw("same");
+
+
+
+             }
+    TLegend *legend11 = new TLegend(0.15, 0.75, 0.6, 0.9);
+    legend11->SetTextFont(42);
+    legend11->SetLineColor(0);
+    legend11->SetTextSize(0.03);
+    legend11->SetFillColor(0);
+    legend11->AddEntry(pEff30, "Time flagged, delay -4", "l");
+    legend11->AddEntry(pEff31, "Time flagged, delay -2", "l");
+    legend11->AddEntry(pEff32, "Time flagged, delay 0", "l");
+    legend11->AddEntry(pEff33, "Time flagged, delay 2", "l");
+    legend11->AddEntry(pEff34, "Time flagged, delay 4", "l");
+    legend11->AddEntry(pEff35, "Time flagged, delay 6", "l");
+    legend11->AddEntry(pEff36, "Time flagged, delay 8", "l");
+    legend11->AddEntry(pEff37, "Time flagged, delay 10", "l");
+
+    legend11->Draw("same");
+
+    char saveFile11[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    latex->DrawLatex(0.7, 0.8, "#scale[0.5]{#frac{!fg1 && (fg2 || fg3)}{fg1 || fg2 || fg3}}");
+    sprintf(saveFile11,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_all_effs.pdf");
+    c1->SaveAs(saveFile11);
+    
+    
+    
+    // eff with (!fg1 && (fg2 || fg3))/ (fg1 || fg2 || fg3)
+    TH1F *h70 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123_1");
+    TH1F *h71 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123_8");
+    TH1F *h72 = (TH1F*)f1->Get("LLPqieDelay_FG_fg123_15");
+    
+    TH1F *h73 = (TH1F*)f1->Get("LLPqieDelay_FG_other_1");
+    TH1F *h74 = (TH1F*)f1->Get("LLPqieDelay_FG_other_8");
+    TH1F *h75 = (TH1F*)f1->Get("LLPqieDelay_FG_other_15");
+    
+    h70->SetLineColorAlpha(kWhite, 1.);
+    h70->SetTitle("Tower Efficiency vs QIE delay for TP i #eta 1, 8, 15 (RAW)");
+    h70->GetXaxis()->SetTitle("QIE delay");
+    h70->GetXaxis()->SetTitleSize(0.045);
+    h70->GetXaxis()->SetTitleOffset(1.1);
+    h70->GetYaxis()->SetTitle("Tower Efficiency");
+    h70->GetYaxis()->SetTitleSize(0.045);
+    h70->GetYaxis()->SetTitleOffset(1.15);
+    h70->GetYaxis()->SetRangeUser(0.,1.3);
+    h70->GetXaxis()->SetRangeUser(-6 ,12);
+    h70->Draw();
+    
+    c1->Update();
+    c1->RedrawAxis();
+    
+    TEfficiency* pEff40 = 0;
+    TEfficiency* pEff41 = 0;
+    TEfficiency* pEff42 = 0;
+    
+    if(TEfficiency::CheckConsistency(*h73,*h70) && TEfficiency::CheckConsistency(*h74,*h71) && TEfficiency::CheckConsistency(*h75,*h72))
+          {
+            pEff40 = new TEfficiency(*h73,*h70);
+            pEff40->SetLineWidth(3.);
+            pEff40->SetLineColor(kBlue);
+            pEff40->Draw("same");
+            
+            pEff41 = new TEfficiency(*h74,*h71);
+            pEff41->SetLineWidth(3.);
+            pEff41->SetLineColor(kRed);
+            pEff41->Draw("same");
+            
+            pEff42 = new TEfficiency(*h75,*h72);
+            pEff42->SetLineWidth(3.);
+            pEff42->SetLineColor(kBlack);
+            pEff42->Draw("same");
+          }
+        TLegend *legend12 = new TLegend(0.15, 0.7, 0.6, 0.8);
+        legend12->SetTextFont(42);
+        legend12->SetLineColor(0);
+        legend12->SetTextSize(0.03);
+        legend12->SetFillColor(0);
+        legend12->AddEntry(pEff40, "Time flagged, i #eta 1", "l");
+        legend12->AddEntry(pEff41, "Time flagged, i #eta 8", "l");
+        legend12->AddEntry(pEff42, "Time flagged, i #eta 15 ", "l");
+        legend12->Draw("same");
+        
+        char saveFile12[100];
+        latex->DrawLatex(0.7, 0.8, "#scale[0.5]{#frac{!fg1 && (fg2 || fg3)}{fg1 || fg2 || fg3}}");
+        sprintf(saveFile12, "/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot/QIE_Tower_ieta_fg123_effs_diff_ieta.pdf");
+        c1->SaveAs(saveFile12);
+        
 }
