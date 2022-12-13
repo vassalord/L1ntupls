@@ -129,7 +129,7 @@ void JetEffs() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.03);
+    h9->GetYaxis()->SetRangeUser(0.,0.05);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -793,7 +793,7 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff16 = new TEfficiency(*h39,*h31);
                 pEff16->SetLineWidth(3.);
-                pEff16->SetLineColor(kGreen);
+                pEff16->SetLineColor(kGreen+2);
                 pEff16->Draw("same");
                 
                 pEff17 = new TEfficiency(*h40,*h32);
@@ -808,12 +808,12 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff19 = new TEfficiency(*h42,*h34);
                 pEff19->SetLineWidth(3.);
-                pEff19->SetLineColor(kBlack);
+                pEff19->SetLineColor(kGray+1);
                 pEff19->Draw("same");
                 
                 pEff20 = new TEfficiency(*h43,*h35);
                 pEff20->SetLineWidth(3.);
-                pEff20->SetLineColor(kGray);
+                pEff20->SetLineColor(kBlack);
                 pEff20->Draw("same");
                 
             }
@@ -957,7 +957,7 @@ for (int ieta = -16; ieta <=16; ieta++){
 
                 pEff33 = new TEfficiency(*h63,*h53);
                 pEff33->SetLineWidth(3.);
-                pEff33->SetLineColor(kGreen);
+                pEff33->SetLineColor(kGreen+2);
                 pEff33->Draw("same");
 
                 pEff34 = new TEfficiency(*h64,*h54);
@@ -972,12 +972,12 @@ for (int ieta = -16; ieta <=16; ieta++){
 
                 pEff36 = new TEfficiency(*h66,*h56);
                 pEff36->SetLineWidth(3.);
-                pEff36->SetLineColor(kBlack);
+                pEff36->SetLineColor(kGray+1);
                 pEff36->Draw("same");
 
                 pEff37 = new TEfficiency(*h67,*h57);
                 pEff37->SetLineWidth(3.);
-                pEff37->SetLineColor(kGray);
+                pEff37->SetLineColor(kBlack);
                 pEff37->Draw("same");
 
 
@@ -1133,7 +1133,7 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff46 = new TEfficiency(*h89,*h81);
                 pEff46->SetLineWidth(3.);
-                pEff46->SetLineColor(kGreen);
+                pEff46->SetLineColor(kGreen+2);
                 pEff46->Draw("same");
                 
                 pEff47 = new TEfficiency(*h90,*h82);
@@ -1148,12 +1148,12 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff49 = new TEfficiency(*h92,*h84);
                 pEff49->SetLineWidth(3.);
-                pEff49->SetLineColor(kBlack);
+                pEff49->SetLineColor(kGray+1);
                 pEff49->Draw("same");
                 
                 pEff50 = new TEfficiency(*h93,*h85);
                 pEff50->SetLineWidth(3.);
-                pEff50->SetLineColor(kGray);
+                pEff50->SetLineColor(kBlack);
                 pEff50->Draw("same");
             
             }
@@ -1195,14 +1195,14 @@ for (int ieta = -16; ieta <=16; ieta++){
     TH1F *h104 = (TH1F*)f1->Get("JetEt_over5_delay8");
     TH1F *h105 = (TH1F*)f1->Get("JetEt_over5_delay10");
     
-    TH1F *h106 = (TH1F*)f1->Get("JetEt_over5_delay-4");
-    TH1F *h107 = (TH1F*)f1->Get("JetEt_over5_delay-2");
-    TH1F *h108 = (TH1F*)f1->Get("JetEt_over5_delay0");
-    TH1F *h109 = (TH1F*)f1->Get("JetEt_over5_delay2");
-    TH1F *h110 = (TH1F*)f1->Get("JetEt_over5_delay4");
-    TH1F *h111 = (TH1F*)f1->Get("JetEt_over5_delay6");
-    TH1F *h112 = (TH1F*)f1->Get("JetEt_over5_delay8");
-    TH1F *h113 = (TH1F*)f1->Get("JetEt_over5_delay10");
+    TH1F *h106 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay-4");
+    TH1F *h107 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay-2");
+    TH1F *h108 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay0");
+    TH1F *h109 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay2");
+    TH1F *h110 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay4");
+    TH1F *h111 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay6");
+    TH1F *h112 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay8");
+    TH1F *h113 = (TH1F*)f1->Get("JetEt_hwQual_over5_delay10");
     
     h98->SetLineColorAlpha(kWhite, 1.);
     h98->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T}, i #eta > 5 (RAW)"));
@@ -1248,7 +1248,7 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff56 = new TEfficiency(*h109,*h101);
                 pEff56->SetLineWidth(3.);
-                pEff56->SetLineColor(kGreen);
+                pEff56->SetLineColor(kGreen+2);
                 pEff56->Draw("same");
                 
                 pEff57 = new TEfficiency(*h110,*h102);
@@ -1263,12 +1263,12 @@ for (int ieta = -16; ieta <=16; ieta++){
                 
                 pEff59 = new TEfficiency(*h112,*h104);
                 pEff59->SetLineWidth(3.);
-                pEff59->SetLineColor(kBlack);
+                pEff59->SetLineColor(kGray+1);
                 pEff59->Draw("same");
                 
                 pEff60 = new TEfficiency(*h113,*h105);
                 pEff60->SetLineWidth(3.);
-                pEff60->SetLineColor(kGray);
+                pEff60->SetLineColor(kBlack);
                 pEff60->Draw("same");
             
             }
@@ -1277,14 +1277,14 @@ for (int ieta = -16; ieta <=16; ieta++){
     legend14->SetLineColor(0);
     legend14->SetTextSize(0.02);
     legend14->SetFillColor(0);
-    legend14->AddEntry(pEff13, "Delayed L1 jet vs E_{T} delay -4 ", "l");
-    legend14->AddEntry(pEff14, "Delayed L1 jet vs E_{T} delay -2", "l");
-    legend14->AddEntry(pEff15, "Delayed L1 jet vs E_{T} delay 0", "l");
-    legend14->AddEntry(pEff16, "Delayed L1 jet vs E_{T} delay 2", "l");
-    legend14->AddEntry(pEff17, "Delayed L1 jet vs E_{T} delay 4", "l");
-    legend14->AddEntry(pEff18, "Delayed L1 jet vs E_{T} delay 6", "l");
-    legend14->AddEntry(pEff19, "Delayed L1 jet vs E_{T} delay 8", "l");
-    legend14->AddEntry(pEff20, "Delayed L1 jet vs E_{T} delay 10", "l");
+    legend14->AddEntry(pEff53, "Delayed L1 jet vs E_{T} delay -4 ", "l");
+    legend14->AddEntry(pEff54, "Delayed L1 jet vs E_{T} delay -2", "l");
+    legend14->AddEntry(pEff55, "Delayed L1 jet vs E_{T} delay 0", "l");
+    legend14->AddEntry(pEff56, "Delayed L1 jet vs E_{T} delay 2", "l");
+    legend14->AddEntry(pEff57, "Delayed L1 jet vs E_{T} delay 4", "l");
+    legend14->AddEntry(pEff58, "Delayed L1 jet vs E_{T} delay 6", "l");
+    legend14->AddEntry(pEff59, "Delayed L1 jet vs E_{T} delay 8", "l");
+    legend14->AddEntry(pEff60, "Delayed L1 jet vs E_{T} delay 10", "l");
     
     
     

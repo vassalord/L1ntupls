@@ -119,7 +119,7 @@ void JetEffs_emu() {
     TH1F *h11 = (TH1F*)f1->Get(Form("JetIEta_LLP_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 20 GeV (EMU)",delay));
+    h9->SetTitle(Form("Delayed Jet Efficiency vs Jet i#eta for QIE delay %d, E > 60 GeV (EMU)",delay));
     h9->GetXaxis()->SetTitle("Jet i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -127,7 +127,7 @@ void JetEffs_emu() {
     h9->GetYaxis()->SetTitleSize(0.045);
     h9->GetYaxis()->SetTitleOffset(1.15);
     //  h1->GetYaxis()->SetRangeUser(0.,1.5);
-    h9->GetYaxis()->SetRangeUser(0.,0.3);
+    h9->GetYaxis()->SetRangeUser(0.,0.5);
     h9->GetXaxis()->SetRangeUser(-17 ,17);
     h9->Draw();
 
@@ -225,7 +225,7 @@ void JetEffs_emu() {
     TH1F *h14 = (TH1F*)f1->Get(Form("JetFG_IEta_other_emu_delay%d",delay));
 
     h9->SetLineColorAlpha(kWhite, 1.);
-    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d (EMU)",delay));
+    h9->SetTitle(Form("Tower Efficiency vs TP i#eta for QIE delay %d",delay));
     h9->GetXaxis()->SetTitle("TP i#eta");
     h9->GetXaxis()->SetTitleSize(0.045);
     h9->GetXaxis()->SetTitleOffset(1.1);
@@ -332,7 +332,7 @@ for (int ieta = -16; ieta <=16; ieta++){
     h40->GetYaxis()->SetTitle("Tower Efficiency");
     h40->GetYaxis()->SetTitleSize(0.045);
     h40->GetYaxis()->SetTitleOffset(1.15);
-    h40->GetYaxis()->SetRangeUser(0.,1.0);
+    h40->GetYaxis()->SetRangeUser(0.,1.3);
     h40->GetXaxis()->SetRangeUser(-6 ,12);
     h40->Draw();
     
@@ -918,7 +918,7 @@ for (int ieta = -16; ieta <=16; ieta++){
     h30->GetYaxis()->SetTitleSize(0.045);
     h30->GetYaxis()->SetTitleOffset(1.15);
     h30->GetYaxis()->SetRangeUser(0.,1.3);
-    h30->GetXaxis()->SetRangeUser(-17 ,17);
+    h30->GetXaxis()->SetRangeUser(-17,17);
     h30->Draw();
 
     c1->Update();
@@ -954,7 +954,7 @@ for (int ieta = -16; ieta <=16; ieta++){
 
                 pEff33 = new TEfficiency(*h63,*h53);
                 pEff33->SetLineWidth(3.);
-                pEff33->SetLineColor(kGreen);
+                pEff33->SetLineColor(kGreen+2);
                 pEff33->Draw("same");
 
                 pEff34 = new TEfficiency(*h64,*h54);
@@ -969,12 +969,12 @@ for (int ieta = -16; ieta <=16; ieta++){
 
                 pEff36 = new TEfficiency(*h66,*h56);
                 pEff36->SetLineWidth(3.);
-                pEff36->SetLineColor(kBlack);
+                pEff36->SetLineColor(kGray+1);
                 pEff36->Draw("same");
 
                 pEff37 = new TEfficiency(*h67,*h57);
                 pEff37->SetLineWidth(3.);
-                pEff37->SetLineColor(kGray);
+                pEff37->SetLineColor(kBlack);
                 pEff37->Draw("same");
 
 
@@ -1064,4 +1064,230 @@ for (int ieta = -16; ieta <=16; ieta++){
         latex->DrawLatex(0.7, 0.8, "#scale[0.5]{#frac{!fg1 && (fg2 || fg3)}{fg1 || fg2 || fg3}}");
         sprintf(saveFile12, "/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/QIE_Tower_ieta_fg123_effs_diff_ieta.pdf");
         c1->SaveAs(saveFile12);
+
+        // for jet ET and hwQual all delay
+    
+    TH1F *h78 = (TH1F*)f1->Get("JetEt_less5_emu_delay-4");
+    TH1F *h79 = (TH1F*)f1->Get("JetEt_less5_emu_delay-2");
+    TH1F *h80 = (TH1F*)f1->Get("JetEt_less5_emu_delay0");
+    TH1F *h81 = (TH1F*)f1->Get("JetEt_less5_emu_delay2");
+    TH1F *h82 = (TH1F*)f1->Get("JetEt_less5_emu_delay4");
+    TH1F *h83 = (TH1F*)f1->Get("JetEt_less5_emu_delay6");
+    TH1F *h84 = (TH1F*)f1->Get("JetEt_less5_emu_delay8");
+    TH1F *h85 = (TH1F*)f1->Get("JetEt_less5_emu_delay10");
+    
+    TH1F *h86 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay-4");
+    TH1F *h87 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay-2");
+    TH1F *h88 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay0");
+    TH1F *h89 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay2");
+    TH1F *h90 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay4");
+    TH1F *h91 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay6");
+    TH1F *h92 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay8");
+    TH1F *h93 = (TH1F*)f1->Get("JetEt_hwQual_less5_emu_delay10");
+    
+    h78->SetLineColorAlpha(kWhite, 1.);
+    h78->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T}, i #eta <= 5 (EMU)"));
+    h78->GetXaxis()->SetTitle("Jet E_{T} [GeV]");
+    h78->GetXaxis()->SetTitleSize(0.045);
+    h78->GetXaxis()->SetTitleOffset(1.1);
+    h78->GetYaxis()->SetTitle("Jet Efficiency");
+    h78->GetYaxis()->SetTitleSize(0.045);
+    h78->GetYaxis()->SetTitleOffset(1.15);
+    h78->GetYaxis()->SetRangeUser(0.,1.2);
+    h78->GetXaxis()->SetRangeUser(0,400);
+    h78->Draw();
+    
+    c1->Update();
+    c1->RedrawAxis();
+    
+    TEfficiency* pEff43 = 0;
+    TEfficiency* pEff44 = 0;
+    TEfficiency* pEff45 = 0;
+    TEfficiency* pEff46 = 0;
+    TEfficiency* pEff47 = 0;
+    TEfficiency* pEff48 = 0;
+    TEfficiency* pEff49 = 0;
+    TEfficiency* pEff50 = 0;
+    
+    if(TEfficiency::CheckConsistency(*h86,*h78) && TEfficiency::CheckConsistency(*h87,*h79) && TEfficiency::CheckConsistency(*h88,*h80) && TEfficiency::CheckConsistency(*h89,*h81) && TEfficiency::CheckConsistency(*h90,*h82) && TEfficiency::CheckConsistency(*h91,*h83) && TEfficiency::CheckConsistency(*h92,*h84) && TEfficiency::CheckConsistency(*h93,*h85))
+            {
+                std::cout << "about to do vs Et plots" << std::endl;
+                pEff43 = new TEfficiency(*h86,*h78);
+                pEff43->SetLineWidth(3.);
+                pEff43->SetLineColor(kRed);
+                pEff43->Draw("same");
+                
+                pEff44 = new TEfficiency(*h87,*h79);
+                pEff44->SetLineWidth(3.);
+                pEff44->SetLineColor(kOrange-3);
+                pEff44->Draw("same");
+                
+                pEff45 = new TEfficiency(*h88,*h80);
+                pEff45->SetLineWidth(3.);
+                pEff45->SetLineColor(kYellow-3);
+                pEff45->Draw("same");
+                
+                pEff46 = new TEfficiency(*h89,*h81);
+                pEff46->SetLineWidth(3.);
+                pEff46->SetLineColor(kGreen+2);
+                pEff46->Draw("same");
+                
+                pEff47 = new TEfficiency(*h90,*h82);
+                pEff47->SetLineWidth(3.);
+                pEff47->SetLineColor(kBlue);
+                pEff47->Draw("same");
+                
+                pEff48 = new TEfficiency(*h91,*h83);
+                pEff48->SetLineWidth(3.);
+                pEff48->SetLineColor(kAzure+6);
+                pEff48->Draw("same");
+                
+                pEff49 = new TEfficiency(*h92,*h84);
+                pEff49->SetLineWidth(3.);
+                pEff49->SetLineColor(kGray+1);
+                pEff49->Draw("same");
+                
+                pEff50 = new TEfficiency(*h93,*h85);
+                pEff50->SetLineWidth(3.);
+                pEff50->SetLineColor(kBlack);
+                pEff50->Draw("same");
+            
+            }
+    TLegend *legend13 = new TLegend(0.15, 0.7, 0.6, 0.9);
+    legend13->SetTextFont(42);
+    legend13->SetLineColor(0);
+    legend13->SetTextSize(0.02);
+    legend13->SetFillColor(0);
+    legend13->AddEntry(pEff43, "Delayed L1 jet vs E_{T} delay -4 ", "l");
+    legend13->AddEntry(pEff44, "Delayed L1 jet vs E_{T} delay -2", "l");
+    legend13->AddEntry(pEff45, "Delayed L1 jet vs E_{T} delay 0", "l");
+    legend13->AddEntry(pEff46, "Delayed L1 jet vs E_{T} delay 2", "l");
+    legend13->AddEntry(pEff47, "Delayed L1 jet vs E_{T} delay 4", "l");
+    legend13->AddEntry(pEff48, "Delayed L1 jet vs E_{T} delay 6", "l");
+    legend13->AddEntry(pEff49, "Delayed L1 jet vs E_{T} delay 8", "l");
+    legend13->AddEntry(pEff50, "Delayed L1 jet vs E_{T} delay 10", "l");
+    
+    
+    
+    legend13->Draw("same");
+    
+    char saveFile13[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile13,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Jet_Et_less5_delay.pdf");
+    c1->SaveAs(saveFile13);        
+
+
+
+
+
+   // for jet ET and hwQual all delay
+    
+    TH1F *h98 = (TH1F*)f1->Get("JetEt_over5_emu_delay-4");
+    TH1F *h99 = (TH1F*)f1->Get("JetEt_over5_emu_delay-2");
+    TH1F *h100 = (TH1F*)f1->Get("JetEt_over5_emu_delay0");
+    TH1F *h101 = (TH1F*)f1->Get("JetEt_over5_emu_delay2");
+    TH1F *h102 = (TH1F*)f1->Get("JetEt_over5_emu_delay4");
+    TH1F *h103 = (TH1F*)f1->Get("JetEt_over5_emu_delay6");
+    TH1F *h104 = (TH1F*)f1->Get("JetEt_over5_emu_delay8");
+    TH1F *h105 = (TH1F*)f1->Get("JetEt_over5_emu_delay10");
+    
+    TH1F *h106 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay-4");
+    TH1F *h107 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay-2");
+    TH1F *h108 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay0");
+    TH1F *h109 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay2");
+    TH1F *h110 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay4");
+    TH1F *h111 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay6");
+    TH1F *h112 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay8");
+    TH1F *h113 = (TH1F*)f1->Get("JetEt_hwQual_over5_emu_delay10");
+    
+    h98->SetLineColorAlpha(kWhite, 1.);
+    h98->SetTitle(Form("Delayed Jet Efficiency vs Jet E_{T}, i #eta > 5 (EMU)"));
+    h98->GetXaxis()->SetTitle("Jet E_{T} [GeV]");
+    h98->GetXaxis()->SetTitleSize(0.045);
+    h98->GetXaxis()->SetTitleOffset(1.1);
+    h98->GetYaxis()->SetTitle("Jet Efficiency");
+    h98->GetYaxis()->SetTitleSize(0.045);
+    h98->GetYaxis()->SetTitleOffset(1.15);
+    h98->GetYaxis()->SetRangeUser(0.,1.2);
+    h98->GetXaxis()->SetRangeUser(0,400);
+    h98->Draw();
+    
+    c1->Update();
+    c1->RedrawAxis();
+    
+    TEfficiency* pEff53 = 0;
+    TEfficiency* pEff54 = 0;
+    TEfficiency* pEff55 = 0;
+    TEfficiency* pEff56 = 0;
+    TEfficiency* pEff57 = 0;
+    TEfficiency* pEff58 = 0;
+    TEfficiency* pEff59 = 0;
+    TEfficiency* pEff60 = 0;
+    
+    if(TEfficiency::CheckConsistency(*h106,*h98) && TEfficiency::CheckConsistency(*h107,*h99) && TEfficiency::CheckConsistency(*h108,*h100) && TEfficiency::CheckConsistency(*h109,*h101) && TEfficiency::CheckConsistency(*h110,*h102) && TEfficiency::CheckConsistency(*h111,*h103) && TEfficiency::CheckConsistency(*h112,*h104) && TEfficiency::CheckConsistency(*h113,*h105))
+            {
+                std::cout << "about to do vs Et plots" << std::endl;
+                pEff53 = new TEfficiency(*h106,*h98);
+                pEff53->SetLineWidth(3.);
+                pEff53->SetLineColor(kRed);
+                pEff53->Draw("same");
+
+                pEff54 = new TEfficiency(*h107,*h99);
+                pEff54->SetLineWidth(3.);
+                pEff54->SetLineColor(kOrange-3);
+                pEff54->Draw("same");
+
+                pEff55 = new TEfficiency(*h108,*h100);
+                pEff55->SetLineWidth(3.);
+                pEff55->SetLineColor(kYellow-3);
+                pEff55->Draw("same");
+
+                pEff56 = new TEfficiency(*h109,*h101);
+                pEff56->SetLineWidth(3.);
+                pEff56->SetLineColor(kGreen+2);
+                pEff56->Draw("same");
+
+                pEff57 = new TEfficiency(*h110,*h102);
+                pEff57->SetLineWidth(3.);
+                pEff57->SetLineColor(kBlue);
+                pEff57->Draw("same");
+
+                pEff58 = new TEfficiency(*h111,*h103);
+                pEff58->SetLineWidth(3.);
+                pEff58->SetLineColor(kAzure+6);
+                pEff58->Draw("same");
+
+                pEff59 = new TEfficiency(*h112,*h104);
+                pEff59->SetLineWidth(3.);
+                pEff59->SetLineColor(kGray+1);
+                pEff59->Draw("same");
+
+                pEff60 = new TEfficiency(*h113,*h105);
+                pEff60->SetLineWidth(3.);
+                pEff60->SetLineColor(kBlack);
+                pEff60->Draw("same");
+            
+            }
+    TLegend *legend14 = new TLegend(0.15, 0.7, 0.6, 0.9);
+    legend14->SetTextFont(42);
+    legend14->SetLineColor(0);
+    legend14->SetTextSize(0.02);
+    legend14->SetFillColor(0);
+    legend14->AddEntry(pEff53, "Delayed L1 jet vs E_{T} delay -4 ", "l");
+    legend14->AddEntry(pEff54, "Delayed L1 jet vs E_{T} delay -2", "l");
+    legend14->AddEntry(pEff55, "Delayed L1 jet vs E_{T} delay 0", "l");
+    legend14->AddEntry(pEff56, "Delayed L1 jet vs E_{T} delay 2", "l");
+    legend14->AddEntry(pEff57, "Delayed L1 jet vs E_{T} delay 4", "l");
+    legend14->AddEntry(pEff58, "Delayed L1 jet vs E_{T} delay 6", "l");
+    legend14->AddEntry(pEff59, "Delayed L1 jet vs E_{T} delay 8", "l");
+    legend14->AddEntry(pEff60, "Delayed L1 jet vs E_{T} delay 10", "l");
+    
+    
+    
+    legend14->Draw("same");
+    
+    char saveFile14[100];
+    latex->DrawLatex(0.5, 0.9, cmsLabel);
+    sprintf(saveFile14,"/afs/cern.ch/user/s/shoienko/CMSSW_12_6_0_pre1/src/HcalTrigger/Validation/PlotEffs/Plot_emu/Jet_Et_over5_delay.pdf");
+    c1->SaveAs(saveFile14);
 }
