@@ -1,6 +1,6 @@
 Run the analysis code:
 
--for jet and tower efficiency plots (Validation/bin/)
+- for jet and tower efficiency plots (Validation/bin/)
 
     cmsenv
 
