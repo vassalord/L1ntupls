@@ -2,11 +2,11 @@ Run the analysis code:
 
 - for jet and tower efficiency plots (Validation/bin/)
 
-    cmsenv
+        cmsenv
 
-    scram b -j 8
+        scram b -j 8
 
-    jet_effs.exe new /eos/user/s/shoienko/QIEscan_new/
+        jet_effs.exe new /eos/user/s/shoienko/QIEscan_new/
     
 - efficiency plots can be made from root(RAW) (Validation/PlotEffs/)
  
